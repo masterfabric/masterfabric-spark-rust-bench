@@ -1,35 +1,47 @@
-"""Benchmark setup diagram (Pillow)."""
-from mfviz import GREEN, GREY, ICE, IMG, ORANGE, PURPLE, RED, WHITE, YELLOW, arrow, box, canvas, font
+"""Benchmark setup diagram (Pillow). Counts are read from results/summary.json."""
+import json
+
+from mfviz import GREEN, GREY, ICE, IMG, ORANGE, PURPLE, RED, RESULTS, WHITE, YELLOW, arrow, box, canvas, font
 
 
 def setup():
-    im, d = canvas(1600, 900)
+    s = json.loads((RESULTS / "summary.json").read_text())
+    runs = len(s["checks"])
+    ok_runs = sum(all(v.values()) for v in s["checks"].values())
+    fails = len(s.get("failures", {}))
+    im, d = canvas(1600, 960)
     d.text((60, 40), "MasterFabric Spark Rust Bench · setup", font=font(34, 800), fill=WHITE)
-    d.text((60, 86), "Same Parquet files, same SQL text, same container limits; every engine's rows checked against Spark's.",
+    d.text((60, 86), "Same data (Parquet folder or Iceberg table), same SQL text, same container limits; every run's rows checked against Spark's.",
            font=font(20, 450), fill=GREY)
-    box(d, (50, 330, 380, 600), "Synthetic Parquet", ["calls: 10M / 50M rows", "  207 / 1,038 MiB, Snappy", "cells: 20,000 rows",
+    box(d, (40, 250, 390, 560), "Synthetic Parquet", ["calls: 10M / 50M / 100M / 200M", "  0.2 to 4.1 GiB, Snappy", "cells: 20,000 rows",
                                                        "skewed subscribers"], GREEN, line_size=18)
-    box(d, (470, 300, 770, 630), "queries.sql", ["Q1 filter + aggregate", "Q2 high-card group-by", "Q3 join + daily",
-                                                  "Q4 count distinct", "Q5 window top-N", "+ Spark UDF variants"], YELLOW, line_size=18)
-    y = 140
-    for title, lines, col in (("Spark 3.5.5 · PySpark", ["local[6], driver 6 GiB, JDK 17"], ORANGE),
+    box(d, (40, 610, 390, 860), "Iceberg tables (Spark)", ["calls 50M / 200M, by day(start_ts)", "30 partitions", "Hadoop catalog: plain files",
+                                                            "read by every engine"], ICE, line_size=18)
+    arrow(d, (215, 560), (215, 610), ICE)
+    box(d, (470, 330, 770, 700), "queries.sql", ["Q1 filter + aggregate", "Q2 high-card group-by", "Q3 join + daily",
+                                                  "Q4 count distinct", "Q5 window top-N", "Q6 one week of 30 days", "+ Spark UDF variants"],
+        YELLOW, line_size=18)
+    y = 135
+    for title, lines, col in (("Spark 3.5.5 · PySpark", ["local[6], driver 6 GiB; Iceberg 1.8.1"], ORANGE),
                               ("Spark 3.5.5 · Scala spark-shell", ["same session settings"], YELLOW),
-                              ("Polars 2.1.0 (Rust)", ["lazy scan + SQLContext"], ICE),
-                              ("DataFusion 55.0.0 (Rust)", ["SessionContext, partitions = CPUs"], PURPLE)):
-        box(d, (880, y, 1320, y + 130), title, lines, col, title_size=22, line_size=17)
-        arrow(d, (770, 465), (880, y + 65), col)
-        y += 160
-    d.text((1345, 160), "each in its own", font=font(18, 600), fill=GREY)
-    d.text((1345, 186), "container:", font=font(18, 600), fill=GREY)
-    d.text((1345, 222), "--cpus 6", font=font(20, 700), fill=WHITE)
-    d.text((1345, 252), "--memory 8g", font=font(20, 700), fill=WHITE)
-    d.text((1345, 300), "peak memory:", font=font(18, 600), fill=GREY)
-    d.text((1345, 326), "cgroup", font=font(18, 600), fill=GREY)
-    d.text((1345, 352), "memory.peak", font=font(18, 600), fill=GREY)
-    box(d, (1345, 560, 1560, 770), "collect.py", ["rows equal?", "12/12 runs", "5/5 queries"], RED, title_size=22, line_size=17)
-    arrow(d, (1320, 690), (1345, 690), RED)
-    arrow(d, (380, 465), (470, 465), GREEN)
-    d.text((60, 840), "Reference rows: Polars and DataFusion also run on the host with all 14 cores and no limits.", font=font(18, 500), fill=GREY)
+                              ("Polars 2.1.0 (Rust)", ["lazy scan / scan_iceberg + SQLContext"], ICE),
+                              ("DataFusion 55.0.0 (Rust)", ["Parquet listing; Iceberg via PyIceberg plan"], PURPLE),
+                              ("DuckDB 2.0.1 (C++)", ["read_parquet / iceberg_scan views"], GREEN)):
+        box(d, (860, y, 1320, y + 118), title, lines, col, title_size=22, line_size=17)
+        arrow(d, (770, 515), (860, y + 59), col)
+        y += 140
+    for i, (t, w) in enumerate((("each in its own", 600), ("container:", 600), ("--cpus 6", 700), ("--memory 8g", 700))):
+        d.text((1345, 150 + i * 30), t, font=font(18 if w == 600 else 20, w), fill=GREY if w == 600 else WHITE)
+    d.text((1345, 290), "peak memory:", font=font(18, 600), fill=GREY)
+    d.text((1345, 316), "cgroup memory.peak", font=font(18, 600), fill=GREY)
+    d.text((1345, 352), "a killed run is", font=font(18, 600), fill=GREY)
+    d.text((1345, 378), "recorded, not hidden", font=font(18, 600), fill=GREY)
+    box(d, (1345, 600, 1570, 840), "collect.py", ["rows equal?", f"{ok_runs}/{runs} runs", "6/6 queries each", f"{fails} runs killed"],
+        RED, title_size=22, line_size=17)
+    arrow(d, (1320, 720), (1345, 720), RED)
+    arrow(d, (390, 405), (470, 470), GREEN)
+    arrow(d, (390, 735), (470, 600), ICE)
+    d.text((60, 900), "Reference rows: Polars, DataFusion and DuckDB also run on the host with all 14 cores and no limits.", font=font(18, 500), fill=GREY)
     im.save(IMG / "setup.png", optimize=True)
 
 
