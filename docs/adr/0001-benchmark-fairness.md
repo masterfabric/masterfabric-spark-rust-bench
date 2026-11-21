@@ -14,18 +14,23 @@ headline number.
 
 1. **Same input.** One synthetic Parquet dataset (Snappy, 5M-row files) generated with a fixed
    seed. Subscriber IDs are Zipf-skewed so group-by and distinct are not trivially uniform.
-2. **Same SQL.** All five queries are read from `bench/queries.sql` and run unchanged by Spark,
-   Polars and DataFusion.
+2. **Same SQL.** All six queries are read from `bench/queries.sql` and run unchanged by Spark,
+   Polars, DataFusion and DuckDB. The one Spark-only variant (Q6 with `TIMESTAMP_NTZ` literals,
+   ADR 0005) is reported separately and checked against Q6.
 3. **Same limits.** Each engine runs alone in its own container with `--cpus 6 --memory 8g`.
    Spark uses `local[6]` with a 6 GiB driver and 12 shuffle partitions; DataFusion uses
-   target partitions equal to the CPU count it sees; Polars uses its defaults.
+   target partitions equal to the CPU count it sees; Polars and DuckDB use their defaults
+   (DuckDB sizes its memory limit from the container's cgroup).
 4. **What is timed.** Each query runs once (recorded as the first run), then three more times;
    the median of those three is reported. Start-up and whole-process wall time (from the host,
    including container start) are reported separately, not hidden.
 5. **Memory.** Peak memory is the container cgroup's `memory.peak`, which covers the JVM or the
    Python process and everything it allocated.
 6. **Correctness gate.** `collect.py` compares every engine's rows with PySpark's (floats to a
-   relative 1e-6, dates normalised). Result: 60 of 60 checks identical.
+   relative 1e-6, dates normalised). Result: 234 of 234 checks identical over 38 runs (10M to 200M
+   rows, Parquet and Iceberg).
+7. **Failures stay visible.** A run killed for memory is recorded with its exit code and peak
+   memory in `summary.json` and marked in the charts, not dropped (ADR 0006).
 
 ## Consequences
 
