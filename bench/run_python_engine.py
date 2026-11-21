@@ -46,8 +46,12 @@ def _datafusion_iceberg(ctx, name, metadata):
 
 def datafusion_engine(data, size, fmt="parquet"):
     import datafusion
-    from datafusion import SessionConfig, SessionContext
-    ctx = SessionContext(SessionConfig().with_target_partitions(os.cpu_count()))
+    from datafusion import RuntimeEnvBuilder, SessionConfig, SessionContext
+    runtime = None
+    if os.environ.get("DF_MEMORY_POOL_GIB"):  # bounded pool: operators that can spill write to disk instead of growing
+        runtime = (RuntimeEnvBuilder().with_disk_manager_os()
+                   .with_fair_spill_pool(int(float(os.environ["DF_MEMORY_POOL_GIB"]) * 2**30)))
+    ctx = SessionContext(SessionConfig().with_target_partitions(os.cpu_count()), runtime)
     if fmt == "iceberg":
         _datafusion_iceberg(ctx, "calls", iceberg_metadata(data, f"calls_{size}"))
         _datafusion_iceberg(ctx, "cells", iceberg_metadata(data, "cells"))
