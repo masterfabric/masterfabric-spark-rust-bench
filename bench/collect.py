@@ -7,7 +7,7 @@ from pathlib import Path
 
 RAW, OUT = Path("results/raw"), Path("results")
 ENGINES = ["polars", "datafusion", "pyspark", "scala", "host_polars", "host_datafusion"]
-SQL_QUERIES = ["q1_filter_agg", "q2_high_card_groupby", "q3_join_daily", "q4_distinct", "q5_window_topn"]
+SQL_QUERIES = ["q1_filter_agg", "q2_high_card_groupby", "q3_join_daily", "q4_distinct", "q5_window_topn", "q6_one_week"]
 
 
 def norm(v):
