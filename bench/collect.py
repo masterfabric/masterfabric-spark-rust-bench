@@ -78,6 +78,10 @@ def main():
                     summary["checks"][n] = {q: same(summary["engines"][n]["_rows"][q], base["_rows"][q]) for q in SQL_QUERIES}
     for e in summary["engines"].values():
         e.pop("_rows")
+    for name, e in summary["engines"].items():  # Spark-only Q6 with TIMESTAMP_NTZ literals must match Q6
+        if "q6_one_week_ntz" in e["queries"]:
+            d = json.loads((RAW / f"{name}.json").read_text())["queries"]
+            summary["checks"].setdefault(name, {})["q6_one_week_ntz"] = same(d["q6_one_week_ntz"]["rows"], d["q6_one_week"]["rows"])
     summary["all_results_match"] = all(all(v.values()) for v in summary["checks"].values())
     (OUT / "summary.json").write_text(json.dumps(summary, indent=2))
     for n, e in summary["engines"].items():

@@ -4,7 +4,8 @@
 # includes container and JVM/Python start-up. A run that fails (for example killed for memory) is
 # recorded in <name>.exit and the next run starts; it does not stop the benchmark.
 #   SIZES="10m 50m 100m 200m"  parquet sizes       ICEBERG_SIZES="50m"  sizes also read from Iceberg
-#   ENGINES="polars datafusion duckdb pyspark scala"                    HOST=1  host reference runs
+#   ENGINES="polars datafusion duckdb pyspark scala"  ICEBERG_ENGINES="polars datafusion duckdb pyspark"
+#   HOST=1  host reference runs
 set -uo pipefail
 cd "$(dirname "$0")/.."
 SPARK_IMG=tabulario/spark-iceberg:3.5.5_1.8.1
@@ -13,6 +14,7 @@ RAW=results/raw; mkdir -p "$RAW"
 SIZES=${SIZES:-"10m 50m 100m 200m"}
 ICEBERG_SIZES=${ICEBERG_SIZES:-"50m"}
 ENGINES=${ENGINES:-"polars datafusion duckdb pyspark scala"}
+ICEBERG_ENGINES=${ICEBERG_ENGINES:-"polars datafusion duckdb pyspark"}
 HOST=${HOST:-1}
 LIMITS="--cpus 6 --memory 8g"
 now() { python3 -c 'import time; print(time.time())'; }
@@ -51,7 +53,11 @@ for s in $ICEBERG_SIZES; do
   [ -f "data/iceberg/bench/calls_$s/metadata/version-hint.text" ] || \
     run "make_iceberg_$s" $SPARK_IMG "python3 bench/make_iceberg.py /w/data $s 2>&1 | grep -v WARN | tee $RAW/make_iceberg_$s.log"
   run "iceberg_plan_$s" $ENG_IMG "python bench/iceberg_plan.py /w/data $s $RAW/iceberg_plan_$s.json"
-  for e in polars datafusion duckdb; do single $e $s iceberg "iceberg_"; done
-  run "iceberg_pyspark_$s" $SPARK_IMG "FORMAT=iceberg UDF=0 SPARK_CORES=6 SPARK_DRIVER_MEMORY=6g python3 bench/run_pyspark.py /w/data $s $RAW/iceberg_pyspark_$s.json 2>&1 | grep -v WARN"
+  for e in $ICEBERG_ENGINES; do
+    case $e in
+      polars|datafusion|duckdb) single $e $s iceberg "iceberg_" ;;
+      pyspark) run "iceberg_pyspark_$s" $SPARK_IMG "FORMAT=iceberg UDF=0 SPARK_CORES=6 SPARK_DRIVER_MEMORY=6g python3 bench/run_pyspark.py /w/data $s $RAW/iceberg_pyspark_$s.json 2>&1 | grep -v WARN" ;;
+    esac
+  done
 done
 echo done

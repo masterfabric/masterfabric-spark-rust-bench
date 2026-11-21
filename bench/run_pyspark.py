@@ -53,6 +53,13 @@ def main(data, size, out):
         timing, rows = bench(run, sql)
         res["queries"][name] = timing | {"rows": rows}
         print("pyspark", fmt, size, name, timing["median_s"], flush=True)
+    # Spark-only variant of Q6: start_ts is TIMESTAMP_NTZ (Parquet timestamps without a zone), and the
+    # portable TIMESTAMP literal is zoned, so Spark casts the column and cannot push the filter into
+    # the scan. A TIMESTAMP_NTZ literal keeps the filter on the column, so Iceberg can skip partitions.
+    sql = queries(os.path.join(os.path.dirname(__file__), "queries.sql"))["q6_one_week"].replace("TIMESTAMP '", "TIMESTAMP_NTZ '")
+    timing, rows = bench(run, sql)
+    res["queries"]["q6_one_week_ntz"] = timing | {"rows": rows}
+    print("pyspark", fmt, size, "q6_one_week_ntz", timing["median_s"], flush=True)
     if os.environ.get("UDF", "1") == "0":
         write(out, res); spark.stop(); return
     # UDF variants of the same query: built-in expression, Python UDF, Arrow (pandas) UDF
