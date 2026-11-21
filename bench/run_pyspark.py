@@ -24,7 +24,13 @@ def tier(r):
 
 def main(data, size, out):
     cores = int(os.environ.get("SPARK_CORES", "6"))
-    spark = (SparkSession.builder.master(f"local[{cores}]").appName("mf-bench")
+    fmt = os.environ.get("FORMAT", "parquet")
+    builder = SparkSession.builder
+    if fmt == "iceberg":  # Hadoop-catalog tables written by make_iceberg.py
+        builder = (builder.config("spark.sql.catalog.lab", "org.apache.iceberg.spark.SparkCatalog")
+                   .config("spark.sql.catalog.lab.type", "hadoop")
+                   .config("spark.sql.catalog.lab.warehouse", f"{data}/iceberg"))
+    spark = (builder.master(f"local[{cores}]").appName("mf-bench")
              .config("spark.driver.memory", os.environ.get("SPARK_DRIVER_MEMORY", "6g"))
              .config("spark.sql.shuffle.partitions", str(cores * 2))
              .config("spark.sql.session.timeZone", "UTC")
@@ -34,15 +40,21 @@ def main(data, size, out):
              .config("spark.ui.showConsoleProgress", "false")
              .getOrCreate())
     spark.sparkContext.setLogLevel("ERROR")
-    spark.read.parquet(f"{data}/calls_{size}").createOrReplaceTempView("calls")
-    spark.read.parquet(f"{data}/cells.parquet").createOrReplaceTempView("cells")
+    if fmt == "iceberg":
+        spark.table(f"lab.bench.calls_{size}").createOrReplaceTempView("calls")
+        spark.table("lab.bench.cells").createOrReplaceTempView("cells")
+    else:
+        spark.read.parquet(f"{data}/calls_{size}").createOrReplaceTempView("calls")
+        spark.read.parquet(f"{data}/cells.parquet").createOrReplaceTempView("cells")
     startup = time.perf_counter() - T0
     run = lambda sql: [tuple(r) for r in spark.sql(sql).collect()]  # noqa: E731
-    res = {"engine": "pyspark", "version": spark.version, "size": size, "cpus": cores, "startup_s": round(startup, 3), "queries": {}}
+    res = {"engine": "pyspark", "version": spark.version, "size": size, "format": fmt, "cpus": cores, "startup_s": round(startup, 3), "queries": {}}
     for name, sql in queries(os.path.join(os.path.dirname(__file__), "queries.sql")).items():
         timing, rows = bench(run, sql)
         res["queries"][name] = timing | {"rows": rows}
-        print("pyspark", size, name, timing["median_s"], flush=True)
+        print("pyspark", fmt, size, name, timing["median_s"], flush=True)
+    if os.environ.get("UDF", "1") == "0":
+        write(out, res); spark.stop(); return
     # UDF variants of the same query: built-in expression, Python UDF, Arrow (pandas) UDF
     spark.udf.register("tier_py", tier, StringType())
     try:
