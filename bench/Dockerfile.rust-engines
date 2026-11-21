@@ -1,0 +1,4 @@
+# Polars and DataFusion (both Rust engines with Python bindings) in the same kind of container as Spark.
+FROM python:3.12-slim
+RUN pip install --no-cache-dir polars==2.1.0 datafusion==55.0.0 pyarrow==26.0.1
+WORKDIR /w
