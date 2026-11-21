@@ -1,0 +1,30 @@
+# local configuration and secrets
+.env
+*.pem
+*.key
+kubeconfig*
+
+# generated data, models and runtime state
+data/
+.out/
+*.parquet
+*.gguf
+*.safetensors
+*.bin
+*.pt
+*.ckpt
+
+# python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# os / editors
+.DS_Store
+.idea/
+.vscode/
+results/raw/
+.wheels/
