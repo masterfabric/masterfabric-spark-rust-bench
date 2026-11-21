@@ -27,6 +27,13 @@ def bench(run, sql: str) -> tuple[dict, list]:
     return {"first_s": round(first, 4), "median_s": round(statistics.median(times), 4), "runs_s": [round(x, 4) for x in times]}, rows
 
 
+def iceberg_metadata(data: str, table: str) -> str:
+    """Current metadata file of a Hadoop-catalog Iceberg table written by make_iceberg.py."""
+    meta = Path(data) / "iceberg" / "bench" / table / "metadata"
+    version = (meta / "version-hint.text").read_text().strip()
+    return str(meta / f"v{version}.metadata.json")
+
+
 def write(out: str, payload: dict) -> None:
     Path(out).parent.mkdir(parents=True, exist_ok=True)
     Path(out).write_text(json.dumps(payload, indent=1, default=str))
