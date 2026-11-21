@@ -30,8 +30,10 @@ def bench(run, sql: str) -> tuple[dict, list]:
 def iceberg_metadata(data: str, table: str) -> str:
     """Current metadata file of a Hadoop-catalog Iceberg table written by make_iceberg.py."""
     meta = Path(data) / "iceberg" / "bench" / table / "metadata"
-    version = (meta / "version-hint.text").read_text().strip()
-    return str(meta / f"v{version}.metadata.json")
+    hint = meta / "version-hint.text"
+    if hint.exists():  # Hadoop catalog (Spark): vN.metadata.json named by the hint
+        return str(meta / f"v{hint.read_text().strip()}.metadata.json")
+    return str(max(meta.glob("*.metadata.json")))  # other writers (PyIceberg in the tests): 0000N-<uuid>
 
 
 def write(out: str, payload: dict) -> None:

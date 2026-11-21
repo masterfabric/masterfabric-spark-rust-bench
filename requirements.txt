@@ -1,8 +1,10 @@
 # Host environment (Python 3.12): data generation, host reference runs, tests and charts.
-# The container engines are pinned in bench/Dockerfile.rust-engines and by the Spark image tag.
+# The container engines are pinned in bench/Dockerfile.engines and by the Spark image tag.
 polars==2.1.0
 datafusion==55.0.0
+duckdb==2.0.1
 pyarrow==26.0.1
+pyiceberg[sql-sqlite]==0.12.0  # Iceberg planning; sqlite catalog for the test tables
 numpy==2.5.5
 matplotlib==3.11.2
 pillow==13.0.0
