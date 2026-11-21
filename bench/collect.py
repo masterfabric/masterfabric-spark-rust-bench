@@ -42,7 +42,8 @@ def main():
                                      "process_wall_s": float(wall.read_text()) if wall.exists() else None}
     summary["iceberg"] = {f.stem.removeprefix("iceberg_plan_"): json.loads(f.read_text()) for f in sorted(RAW.glob("iceberg_plan_*.json"))}
     for f in sorted(RAW.glob("make_iceberg_*.log")):
-        summary["iceberg"].setdefault(f.stem.removeprefix("make_iceberg_"), {})["write_log"] = f.read_text().strip()
+        summary["iceberg"].setdefault(f.stem.removeprefix("make_iceberg_"), {})["write_log"] = "\n".join(
+            line for line in f.read_text().splitlines() if line.startswith("iceberg "))
     for f in sorted(RAW.glob("*.json")):
         name = f.stem
         if name.startswith("iceberg_plan_") or name in summary["failures"]:
