@@ -1,432 +1,1536 @@
 {
   "engines": {
+    "datafusion_100m": {
+      "engine": "datafusion",
+      "version": "55.0.0",
+      "size": "100m",
+      "format": "parquet",
+      "cpus": 6,
+      "where": "container (6 CPU, 8 GiB)",
+      "startup_s": 0.077,
+      "process_wall_s": 12.15,
+      "peak_mem_mib": 6652,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 0.2995,
+          "first_s": 0.292
+        },
+        "q2_high_card_groupby": {
+          "median_s": 0.316,
+          "first_s": 0.3141
+        },
+        "q3_join_daily": {
+          "median_s": 0.9129,
+          "first_s": 0.8861
+        },
+        "q4_distinct": {
+          "median_s": 0.8225,
+          "first_s": 0.9742
+        },
+        "q5_window_topn": {
+          "median_s": 0.19,
+          "first_s": 0.1976
+        },
+        "q6_one_week": {
+          "median_s": 0.3548,
+          "first_s": 0.3217
+        }
+      },
+      "sql_total_median_s": 2.8957
+    },
     "datafusion_10m": {
       "engine": "datafusion",
       "version": "55.0.0",
       "size": "10m",
+      "format": "parquet",
       "cpus": 6,
       "where": "container (6 CPU, 8 GiB)",
-      "startup_s": 0.056,
-      "process_wall_s": 1.28,
-      "peak_mem_mib": 1467,
+      "startup_s": 0.05,
+      "process_wall_s": 1.45,
+      "peak_mem_mib": 1653,
       "queries": {
         "q1_filter_agg": {
-          "median_s": 0.0356,
-          "first_s": 0.0405
+          "median_s": 0.0353,
+          "first_s": 0.0354
         },
         "q2_high_card_groupby": {
-          "median_s": 0.0284,
-          "first_s": 0.0289
+          "median_s": 0.0286,
+          "first_s": 0.0282
         },
         "q3_join_daily": {
-          "median_s": 0.0946,
+          "median_s": 0.0941,
           "first_s": 0.0962
         },
         "q4_distinct": {
-          "median_s": 0.0664,
-          "first_s": 0.0731
+          "median_s": 0.0667,
+          "first_s": 0.0735
         },
         "q5_window_topn": {
-          "median_s": 0.0253,
-          "first_s": 0.0263
+          "median_s": 0.0251,
+          "first_s": 0.027
+        },
+        "q6_one_week": {
+          "median_s": 0.0431,
+          "first_s": 0.0563
         }
       },
-      "sql_total_median_s": 0.2503
+      "sql_total_median_s": 0.2929
     },
     "datafusion_50m": {
       "engine": "datafusion",
       "version": "55.0.0",
       "size": "50m",
+      "format": "parquet",
       "cpus": 6,
       "where": "container (6 CPU, 8 GiB)",
-      "startup_s": 0.062,
-      "process_wall_s": 6.08,
-      "peak_mem_mib": 3588,
+      "startup_s": 0.068,
+      "process_wall_s": 6.8,
+      "peak_mem_mib": 3575,
       "queries": {
         "q1_filter_agg": {
-          "median_s": 0.1602,
-          "first_s": 0.1753
+          "median_s": 0.1606,
+          "first_s": 0.1686
         },
         "q2_high_card_groupby": {
-          "median_s": 0.1868,
-          "first_s": 0.1609
+          "median_s": 0.1846,
+          "first_s": 0.172
         },
         "q3_join_daily": {
-          "median_s": 0.5595,
-          "first_s": 0.5297
+          "median_s": 0.5864,
+          "first_s": 0.5278
         },
         "q4_distinct": {
-          "median_s": 0.4352,
-          "first_s": 0.456
+          "median_s": 0.4156,
+          "first_s": 0.439
         },
         "q5_window_topn": {
-          "median_s": 0.1081,
-          "first_s": 0.1081
+          "median_s": 0.1049,
+          "first_s": 0.1127
+        },
+        "q6_one_week": {
+          "median_s": 0.1798,
+          "first_s": 0.1834
         }
       },
-      "sql_total_median_s": 1.4498
+      "sql_total_median_s": 1.6319
+    },
+    "duckdb_100m": {
+      "engine": "duckdb",
+      "version": "2.0.1",
+      "size": "100m",
+      "format": "parquet",
+      "cpus": 6,
+      "where": "container (6 CPU, 8 GiB)",
+      "startup_s": 0.066,
+      "process_wall_s": 9.94,
+      "peak_mem_mib": 1976,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 0.1979,
+          "first_s": 0.2033
+        },
+        "q2_high_card_groupby": {
+          "median_s": 0.2635,
+          "first_s": 0.2681
+        },
+        "q3_join_daily": {
+          "median_s": 0.6699,
+          "first_s": 0.731
+        },
+        "q4_distinct": {
+          "median_s": 0.6678,
+          "first_s": 0.678
+        },
+        "q5_window_topn": {
+          "median_s": 0.2485,
+          "first_s": 0.2553
+        },
+        "q6_one_week": {
+          "median_s": 0.3254,
+          "first_s": 0.3425
+        }
+      },
+      "sql_total_median_s": 2.373
+    },
+    "duckdb_10m": {
+      "engine": "duckdb",
+      "version": "2.0.1",
+      "size": "10m",
+      "format": "parquet",
+      "cpus": 6,
+      "where": "container (6 CPU, 8 GiB)",
+      "startup_s": 0.059,
+      "process_wall_s": 1.52,
+      "peak_mem_mib": 408,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 0.0266,
+          "first_s": 0.0284
+        },
+        "q2_high_card_groupby": {
+          "median_s": 0.033,
+          "first_s": 0.0382
+        },
+        "q3_join_daily": {
+          "median_s": 0.087,
+          "first_s": 0.0877
+        },
+        "q4_distinct": {
+          "median_s": 0.0811,
+          "first_s": 0.0797
+        },
+        "q5_window_topn": {
+          "median_s": 0.0366,
+          "first_s": 0.0414
+        },
+        "q6_one_week": {
+          "median_s": 0.0458,
+          "first_s": 0.0455
+        }
+      },
+      "sql_total_median_s": 0.3101
+    },
+    "duckdb_200m": {
+      "engine": "duckdb",
+      "version": "2.0.1",
+      "size": "200m",
+      "format": "parquet",
+      "cpus": 6,
+      "where": "container (6 CPU, 8 GiB)",
+      "startup_s": 0.107,
+      "process_wall_s": 19.67,
+      "peak_mem_mib": 3269,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 0.3885,
+          "first_s": 0.4298
+        },
+        "q2_high_card_groupby": {
+          "median_s": 0.5514,
+          "first_s": 0.5791
+        },
+        "q3_join_daily": {
+          "median_s": 1.3337,
+          "first_s": 1.4116
+        },
+        "q4_distinct": {
+          "median_s": 1.3142,
+          "first_s": 1.3405
+        },
+        "q5_window_topn": {
+          "median_s": 0.4961,
+          "first_s": 0.5113
+        },
+        "q6_one_week": {
+          "median_s": 0.6928,
+          "first_s": 0.6566
+        }
+      },
+      "sql_total_median_s": 4.7767
+    },
+    "duckdb_50m": {
+      "engine": "duckdb",
+      "version": "2.0.1",
+      "size": "50m",
+      "format": "parquet",
+      "cpus": 6,
+      "where": "container (6 CPU, 8 GiB)",
+      "startup_s": 0.068,
+      "process_wall_s": 5.2,
+      "peak_mem_mib": 1290,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 0.1061,
+          "first_s": 0.1094
+        },
+        "q2_high_card_groupby": {
+          "median_s": 0.1307,
+          "first_s": 0.1344
+        },
+        "q3_join_daily": {
+          "median_s": 0.3499,
+          "first_s": 0.3709
+        },
+        "q4_distinct": {
+          "median_s": 0.3293,
+          "first_s": 0.3382
+        },
+        "q5_window_topn": {
+          "median_s": 0.1292,
+          "first_s": 0.1347
+        },
+        "q6_one_week": {
+          "median_s": 0.1722,
+          "first_s": 0.1721
+        }
+      },
+      "sql_total_median_s": 1.2174
+    },
+    "host_datafusion_100m": {
+      "engine": "datafusion",
+      "version": "55.0.0",
+      "size": "100m",
+      "format": "parquet",
+      "cpus": 14,
+      "where": "host (no limits)",
+      "startup_s": 0.249,
+      "process_wall_s": null,
+      "peak_mem_mib": null,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 0.1423,
+          "first_s": 0.2237
+        },
+        "q2_high_card_groupby": {
+          "median_s": 0.1609,
+          "first_s": 0.162
+        },
+        "q3_join_daily": {
+          "median_s": 0.4798,
+          "first_s": 0.4228
+        },
+        "q4_distinct": {
+          "median_s": 0.3849,
+          "first_s": 0.4032
+        },
+        "q5_window_topn": {
+          "median_s": 0.085,
+          "first_s": 0.0908
+        },
+        "q6_one_week": {
+          "median_s": 0.127,
+          "first_s": 0.1277
+        }
+      },
+      "sql_total_median_s": 1.3799
     },
     "host_datafusion_10m": {
       "engine": "datafusion",
       "version": "55.0.0",
       "size": "10m",
+      "format": "parquet",
       "cpus": 14,
       "where": "host (no limits)",
-      "startup_s": 0.211,
+      "startup_s": 0.225,
       "process_wall_s": null,
       "peak_mem_mib": null,
       "queries": {
         "q1_filter_agg": {
-          "median_s": 0.0152,
-          "first_s": 0.0816
+          "median_s": 0.0153,
+          "first_s": 0.0957
         },
         "q2_high_card_groupby": {
-          "median_s": 0.0119,
-          "first_s": 0.0132
+          "median_s": 0.0116,
+          "first_s": 0.0135
         },
         "q3_join_daily": {
-          "median_s": 0.0601,
-          "first_s": 0.0451
+          "median_s": 0.0562,
+          "first_s": 0.0452
         },
         "q4_distinct": {
-          "median_s": 0.0366,
-          "first_s": 0.0383
+          "median_s": 0.0474,
+          "first_s": 0.0394
         },
         "q5_window_topn": {
-          "median_s": 0.0157,
-          "first_s": 0.0198
+          "median_s": 0.0204,
+          "first_s": 0.0319
+        },
+        "q6_one_week": {
+          "median_s": 0.0428,
+          "first_s": 0.0337
         }
       },
-      "sql_total_median_s": 0.1395
+      "sql_total_median_s": 0.1937
+    },
+    "host_datafusion_200m": {
+      "engine": "datafusion",
+      "version": "55.0.0",
+      "size": "200m",
+      "format": "parquet",
+      "cpus": 14,
+      "where": "host (no limits)",
+      "startup_s": 0.273,
+      "process_wall_s": null,
+      "peak_mem_mib": null,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 0.2464,
+          "first_s": 0.323
+        },
+        "q2_high_card_groupby": {
+          "median_s": 0.2833,
+          "first_s": 0.4172
+        },
+        "q3_join_daily": {
+          "median_s": 0.9476,
+          "first_s": 0.938
+        },
+        "q4_distinct": {
+          "median_s": 0.6695,
+          "first_s": 0.7065
+        },
+        "q5_window_topn": {
+          "median_s": 0.1625,
+          "first_s": 0.1608
+        },
+        "q6_one_week": {
+          "median_s": 0.6082,
+          "first_s": 0.341
+        }
+      },
+      "sql_total_median_s": 2.9175
     },
     "host_datafusion_50m": {
       "engine": "datafusion",
       "version": "55.0.0",
       "size": "50m",
+      "format": "parquet",
       "cpus": 14,
       "where": "host (no limits)",
-      "startup_s": 0.228,
+      "startup_s": 0.251,
       "process_wall_s": null,
       "peak_mem_mib": null,
       "queries": {
         "q1_filter_agg": {
-          "median_s": 0.0764,
-          "first_s": 0.1463
+          "median_s": 0.0723,
+          "first_s": 0.1509
         },
         "q2_high_card_groupby": {
-          "median_s": 0.0753,
-          "first_s": 0.0691
+          "median_s": 0.0631,
+          "first_s": 0.0639
         },
         "q3_join_daily": {
-          "median_s": 0.2241,
-          "first_s": 0.2466
+          "median_s": 0.2148,
+          "first_s": 0.2621
         },
         "q4_distinct": {
-          "median_s": 0.1866,
-          "first_s": 0.1788
+          "median_s": 0.1893,
+          "first_s": 0.1828
         },
         "q5_window_topn": {
-          "median_s": 0.0527,
-          "first_s": 0.0716
+          "median_s": 0.0585,
+          "first_s": 0.0531
+        },
+        "q6_one_week": {
+          "median_s": 0.0831,
+          "first_s": 0.1394
         }
       },
-      "sql_total_median_s": 0.6151
+      "sql_total_median_s": 0.6811
+    },
+    "host_duckdb_100m": {
+      "engine": "duckdb",
+      "version": "2.0.1",
+      "size": "100m",
+      "format": "parquet",
+      "cpus": 14,
+      "where": "host (no limits)",
+      "startup_s": 0.119,
+      "process_wall_s": null,
+      "peak_mem_mib": null,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 0.1078,
+          "first_s": 0.118
+        },
+        "q2_high_card_groupby": {
+          "median_s": 0.1319,
+          "first_s": 0.1345
+        },
+        "q3_join_daily": {
+          "median_s": 0.3591,
+          "first_s": 0.3904
+        },
+        "q4_distinct": {
+          "median_s": 0.3475,
+          "first_s": 0.3556
+        },
+        "q5_window_topn": {
+          "median_s": 0.1342,
+          "first_s": 0.1371
+        },
+        "q6_one_week": {
+          "median_s": 0.1511,
+          "first_s": 0.1535
+        }
+      },
+      "sql_total_median_s": 1.2316
+    },
+    "host_duckdb_10m": {
+      "engine": "duckdb",
+      "version": "2.0.1",
+      "size": "10m",
+      "format": "parquet",
+      "cpus": 14,
+      "where": "host (no limits)",
+      "startup_s": 0.116,
+      "process_wall_s": null,
+      "peak_mem_mib": null,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 0.0137,
+          "first_s": 0.0228
+        },
+        "q2_high_card_groupby": {
+          "median_s": 0.0163,
+          "first_s": 0.0267
+        },
+        "q3_join_daily": {
+          "median_s": 0.0417,
+          "first_s": 0.0469
+        },
+        "q4_distinct": {
+          "median_s": 0.0392,
+          "first_s": 0.0408
+        },
+        "q5_window_topn": {
+          "median_s": 0.0219,
+          "first_s": 0.023
+        },
+        "q6_one_week": {
+          "median_s": 0.0194,
+          "first_s": 0.021
+        }
+      },
+      "sql_total_median_s": 0.1522
+    },
+    "host_duckdb_200m": {
+      "engine": "duckdb",
+      "version": "2.0.1",
+      "size": "200m",
+      "format": "parquet",
+      "cpus": 14,
+      "where": "host (no limits)",
+      "startup_s": 0.142,
+      "process_wall_s": null,
+      "peak_mem_mib": null,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 0.2055,
+          "first_s": 0.2703
+        },
+        "q2_high_card_groupby": {
+          "median_s": 0.2662,
+          "first_s": 0.2955
+        },
+        "q3_join_daily": {
+          "median_s": 0.7047,
+          "first_s": 0.7339
+        },
+        "q4_distinct": {
+          "median_s": 0.6969,
+          "first_s": 0.6989
+        },
+        "q5_window_topn": {
+          "median_s": 0.2597,
+          "first_s": 0.2556
+        },
+        "q6_one_week": {
+          "median_s": 0.2881,
+          "first_s": 0.2941
+        }
+      },
+      "sql_total_median_s": 2.4211
+    },
+    "host_duckdb_50m": {
+      "engine": "duckdb",
+      "version": "2.0.1",
+      "size": "50m",
+      "format": "parquet",
+      "cpus": 14,
+      "where": "host (no limits)",
+      "startup_s": 0.12,
+      "process_wall_s": null,
+      "peak_mem_mib": null,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 0.0567,
+          "first_s": 0.0645
+        },
+        "q2_high_card_groupby": {
+          "median_s": 0.068,
+          "first_s": 0.0689
+        },
+        "q3_join_daily": {
+          "median_s": 0.1869,
+          "first_s": 0.1921
+        },
+        "q4_distinct": {
+          "median_s": 0.1728,
+          "first_s": 0.1735
+        },
+        "q5_window_topn": {
+          "median_s": 0.071,
+          "first_s": 0.0734
+        },
+        "q6_one_week": {
+          "median_s": 0.0792,
+          "first_s": 0.0861
+        }
+      },
+      "sql_total_median_s": 0.6346
+    },
+    "host_polars_100m": {
+      "engine": "polars",
+      "version": "2.1.0",
+      "size": "100m",
+      "format": "parquet",
+      "cpus": 14,
+      "where": "host (no limits)",
+      "startup_s": 0.204,
+      "process_wall_s": null,
+      "peak_mem_mib": null,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 0.138,
+          "first_s": 0.5908
+        },
+        "q2_high_card_groupby": {
+          "median_s": 0.1008,
+          "first_s": 0.113
+        },
+        "q3_join_daily": {
+          "median_s": 0.3446,
+          "first_s": 0.3636
+        },
+        "q4_distinct": {
+          "median_s": 0.3205,
+          "first_s": 0.32
+        },
+        "q5_window_topn": {
+          "median_s": 0.0855,
+          "first_s": 0.0897
+        },
+        "q6_one_week": {
+          "median_s": 0.119,
+          "first_s": 0.1249
+        }
+      },
+      "sql_total_median_s": 1.1084
     },
     "host_polars_10m": {
       "engine": "polars",
       "version": "2.1.0",
       "size": "10m",
+      "format": "parquet",
       "cpus": 14,
       "where": "host (no limits)",
-      "startup_s": 0.101,
+      "startup_s": 0.171,
       "process_wall_s": null,
       "peak_mem_mib": null,
       "queries": {
         "q1_filter_agg": {
-          "median_s": 0.0185,
-          "first_s": 0.0236
+          "median_s": 0.0171,
+          "first_s": 0.1247
         },
         "q2_high_card_groupby": {
-          "median_s": 0.0139,
-          "first_s": 0.0143
+          "median_s": 0.0141,
+          "first_s": 0.0212
         },
         "q3_join_daily": {
-          "median_s": 0.0432,
-          "first_s": 0.067
+          "median_s": 0.0458,
+          "first_s": 0.0701
         },
         "q4_distinct": {
-          "median_s": 0.0347,
+          "median_s": 0.0343,
           "first_s": 0.0361
         },
         "q5_window_topn": {
-          "median_s": 0.0143,
-          "first_s": 0.0166
+          "median_s": 0.0149,
+          "first_s": 0.0189
+        },
+        "q6_one_week": {
+          "median_s": 0.0152,
+          "first_s": 0.0192
         }
       },
-      "sql_total_median_s": 0.1246
+      "sql_total_median_s": 0.1414
+    },
+    "host_polars_200m": {
+      "engine": "polars",
+      "version": "2.1.0",
+      "size": "200m",
+      "format": "parquet",
+      "cpus": 14,
+      "where": "host (no limits)",
+      "startup_s": 0.226,
+      "process_wall_s": null,
+      "peak_mem_mib": null,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 0.2586,
+          "first_s": 0.6444
+        },
+        "q2_high_card_groupby": {
+          "median_s": 0.2274,
+          "first_s": 0.2487
+        },
+        "q3_join_daily": {
+          "median_s": 0.6823,
+          "first_s": 0.7231
+        },
+        "q4_distinct": {
+          "median_s": 0.6783,
+          "first_s": 0.6917
+        },
+        "q5_window_topn": {
+          "median_s": 0.1685,
+          "first_s": 0.1738
+        },
+        "q6_one_week": {
+          "median_s": 0.2333,
+          "first_s": 0.2385
+        }
+      },
+      "sql_total_median_s": 2.2484
     },
     "host_polars_50m": {
       "engine": "polars",
       "version": "2.1.0",
       "size": "50m",
+      "format": "parquet",
       "cpus": 14,
       "where": "host (no limits)",
-      "startup_s": 0.179,
+      "startup_s": 0.194,
       "process_wall_s": null,
       "peak_mem_mib": null,
       "queries": {
         "q1_filter_agg": {
-          "median_s": 0.0685,
-          "first_s": 0.4057
+          "median_s": 0.0688,
+          "first_s": 0.3996
         },
         "q2_high_card_groupby": {
           "median_s": 0.0513,
-          "first_s": 0.0574
+          "first_s": 0.0598
         },
         "q3_join_daily": {
-          "median_s": 0.1789,
-          "first_s": 0.254
+          "median_s": 0.1719,
+          "first_s": 0.2182
         },
         "q4_distinct": {
-          "median_s": 0.1589,
-          "first_s": 0.1648
+          "median_s": 0.1585,
+          "first_s": 0.1664
         },
         "q5_window_topn": {
-          "median_s": 0.0465,
-          "first_s": 0.0536
+          "median_s": 0.046,
+          "first_s": 0.0519
+        },
+        "q6_one_week": {
+          "median_s": 0.0642,
+          "first_s": 0.0648
         }
       },
-      "sql_total_median_s": 0.5041
+      "sql_total_median_s": 0.5607
+    },
+    "iceberg_datafusion_50m": {
+      "engine": "datafusion",
+      "version": "55.0.0",
+      "size": "50m",
+      "format": "iceberg",
+      "cpus": 6,
+      "where": "container (6 CPU, 8 GiB)",
+      "startup_s": 0.317,
+      "process_wall_s": 5.87,
+      "peak_mem_mib": 7455,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 0.1418,
+          "first_s": 0.1754
+        },
+        "q2_high_card_groupby": {
+          "median_s": 0.1179,
+          "first_s": 0.1242
+        },
+        "q3_join_daily": {
+          "median_s": 0.4381,
+          "first_s": 0.4286
+        },
+        "q4_distinct": {
+          "median_s": 0.3222,
+          "first_s": 0.3493
+        },
+        "q5_window_topn": {
+          "median_s": 0.1334,
+          "first_s": 0.14
+        },
+        "q6_one_week": {
+          "median_s": 0.1081,
+          "first_s": 0.1075
+        }
+      },
+      "sql_total_median_s": 1.2615
+    },
+    "iceberg_duckdb_200m": {
+      "engine": "duckdb",
+      "version": "2.0.1",
+      "size": "200m",
+      "format": "iceberg",
+      "cpus": 6,
+      "where": "container (6 CPU, 8 GiB)",
+      "startup_s": 0.541,
+      "process_wall_s": 18.38,
+      "peak_mem_mib": 3618,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 0.4044,
+          "first_s": 0.4275
+        },
+        "q2_high_card_groupby": {
+          "median_s": 0.5629,
+          "first_s": 0.5687
+        },
+        "q3_join_daily": {
+          "median_s": 1.3227,
+          "first_s": 1.322
+        },
+        "q4_distinct": {
+          "median_s": 1.3092,
+          "first_s": 1.3521
+        },
+        "q5_window_topn": {
+          "median_s": 0.469,
+          "first_s": 0.456
+        },
+        "q6_one_week": {
+          "median_s": 0.3136,
+          "first_s": 0.3198
+        }
+      },
+      "sql_total_median_s": 4.3818
+    },
+    "iceberg_duckdb_50m": {
+      "engine": "duckdb",
+      "version": "2.0.1",
+      "size": "50m",
+      "format": "iceberg",
+      "cpus": 6,
+      "where": "container (6 CPU, 8 GiB)",
+      "startup_s": 0.754,
+      "process_wall_s": 5.79,
+      "peak_mem_mib": 1401,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 0.1104,
+          "first_s": 0.1241
+        },
+        "q2_high_card_groupby": {
+          "median_s": 0.135,
+          "first_s": 0.1347
+        },
+        "q3_join_daily": {
+          "median_s": 0.3794,
+          "first_s": 0.3736
+        },
+        "q4_distinct": {
+          "median_s": 0.3208,
+          "first_s": 0.3233
+        },
+        "q5_window_topn": {
+          "median_s": 0.1419,
+          "first_s": 0.1406
+        },
+        "q6_one_week": {
+          "median_s": 0.116,
+          "first_s": 0.1174
+        }
+      },
+      "sql_total_median_s": 1.2035
+    },
+    "iceberg_polars_200m": {
+      "engine": "polars",
+      "version": "2.1.0",
+      "size": "200m",
+      "format": "iceberg",
+      "cpus": 6,
+      "where": "container (6 CPU, 8 GiB)",
+      "startup_s": 0.232,
+      "process_wall_s": 19.28,
+      "peak_mem_mib": 3421,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 0.4822,
+          "first_s": 0.6796
+        },
+        "q2_high_card_groupby": {
+          "median_s": 0.4632,
+          "first_s": 0.5762
+        },
+        "q3_join_daily": {
+          "median_s": 1.4384,
+          "first_s": 1.9121
+        },
+        "q4_distinct": {
+          "median_s": 1.399,
+          "first_s": 1.4095
+        },
+        "q5_window_topn": {
+          "median_s": 0.3554,
+          "first_s": 0.3577
+        },
+        "q6_one_week": {
+          "median_s": 0.3487,
+          "first_s": 0.3501
+        }
+      },
+      "sql_total_median_s": 4.4869
+    },
+    "iceberg_polars_50m": {
+      "engine": "polars",
+      "version": "2.1.0",
+      "size": "50m",
+      "format": "iceberg",
+      "cpus": 6,
+      "where": "container (6 CPU, 8 GiB)",
+      "startup_s": 0.272,
+      "process_wall_s": 5.12,
+      "peak_mem_mib": 1378,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 0.1186,
+          "first_s": 0.2533
+        },
+        "q2_high_card_groupby": {
+          "median_s": 0.1053,
+          "first_s": 0.1161
+        },
+        "q3_join_daily": {
+          "median_s": 0.358,
+          "first_s": 0.3967
+        },
+        "q4_distinct": {
+          "median_s": 0.3235,
+          "first_s": 0.3315
+        },
+        "q5_window_topn": {
+          "median_s": 0.0998,
+          "first_s": 0.1057
+        },
+        "q6_one_week": {
+          "median_s": 0.0863,
+          "first_s": 0.0981
+        }
+      },
+      "sql_total_median_s": 1.0915
+    },
+    "iceberg_pyspark_200m": {
+      "engine": "pyspark",
+      "version": "3.5.5",
+      "size": "200m",
+      "format": "iceberg",
+      "cpus": 6,
+      "where": "container (6 CPU, 8 GiB)",
+      "startup_s": 1.855,
+      "process_wall_s": 72.55,
+      "peak_mem_mib": 7964,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 1.4196,
+          "first_s": 3.2596
+        },
+        "q2_high_card_groupby": {
+          "median_s": 1.6354,
+          "first_s": 2.4274
+        },
+        "q3_join_daily": {
+          "median_s": 3.9601,
+          "first_s": 4.7249
+        },
+        "q4_distinct": {
+          "median_s": 4.3908,
+          "first_s": 4.8743
+        },
+        "q5_window_topn": {
+          "median_s": 1.0046,
+          "first_s": 1.3125
+        },
+        "q6_one_week": {
+          "median_s": 2.9886,
+          "first_s": 3.6319
+        },
+        "q6_one_week_ntz": {
+          "median_s": 0.7422,
+          "first_s": 0.8521
+        }
+      },
+      "sql_total_median_s": 15.3991
+    },
+    "iceberg_pyspark_50m": {
+      "engine": "pyspark",
+      "version": "3.5.5",
+      "size": "50m",
+      "format": "iceberg",
+      "cpus": 6,
+      "where": "container (6 CPU, 8 GiB)",
+      "startup_s": 2.0,
+      "process_wall_s": 28.13,
+      "peak_mem_mib": 3983,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 0.5059,
+          "first_s": 2.2063
+        },
+        "q2_high_card_groupby": {
+          "median_s": 0.5969,
+          "first_s": 1.0537
+        },
+        "q3_join_daily": {
+          "median_s": 1.1871,
+          "first_s": 1.6386
+        },
+        "q4_distinct": {
+          "median_s": 1.2592,
+          "first_s": 1.8676
+        },
+        "q5_window_topn": {
+          "median_s": 0.3681,
+          "first_s": 0.6655
+        },
+        "q6_one_week": {
+          "median_s": 1.0158,
+          "first_s": 1.1821
+        },
+        "q6_one_week_ntz": {
+          "median_s": 0.3277,
+          "first_s": 0.4305
+        }
+      },
+      "sql_total_median_s": 4.933
+    },
+    "polars_100m": {
+      "engine": "polars",
+      "version": "2.1.0",
+      "size": "100m",
+      "format": "parquet",
+      "cpus": 6,
+      "where": "container (6 CPU, 8 GiB)",
+      "startup_s": 0.11,
+      "process_wall_s": 10.24,
+      "peak_mem_mib": 2313,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 0.2259,
+          "first_s": 0.5735
+        },
+        "q2_high_card_groupby": {
+          "median_s": 0.1968,
+          "first_s": 0.4645
+        },
+        "q3_join_daily": {
+          "median_s": 0.6593,
+          "first_s": 1.2809
+        },
+        "q4_distinct": {
+          "median_s": 0.627,
+          "first_s": 0.6478
+        },
+        "q5_window_topn": {
+          "median_s": 0.1579,
+          "first_s": 0.1637
+        },
+        "q6_one_week": {
+          "median_s": 0.2787,
+          "first_s": 0.2675
+        }
+      },
+      "sql_total_median_s": 2.1456
     },
     "polars_10m": {
       "engine": "polars",
       "version": "2.1.0",
       "size": "10m",
+      "format": "parquet",
       "cpus": 6,
       "where": "container (6 CPU, 8 GiB)",
-      "startup_s": 0.088,
-      "process_wall_s": 1.33,
-      "peak_mem_mib": 894,
+      "startup_s": 0.074,
+      "process_wall_s": 1.37,
+      "peak_mem_mib": 889,
       "queries": {
         "q1_filter_agg": {
-          "median_s": 0.0292,
-          "first_s": 0.0546
+          "median_s": 0.0279,
+          "first_s": 0.0514
         },
         "q2_high_card_groupby": {
-          "median_s": 0.0287,
-          "first_s": 0.0278
+          "median_s": 0.0253,
+          "first_s": 0.0263
         },
         "q3_join_daily": {
-          "median_s": 0.0816,
-          "first_s": 0.0857
+          "median_s": 0.0763,
+          "first_s": 0.0829
         },
         "q4_distinct": {
-          "median_s": 0.0666,
-          "first_s": 0.069
+          "median_s": 0.0674,
+          "first_s": 0.0654
         },
         "q5_window_topn": {
-          "median_s": 0.0275,
-          "first_s": 0.029
+          "median_s": 0.0241,
+          "first_s": 0.0252
+        },
+        "q6_one_week": {
+          "median_s": 0.0385,
+          "first_s": 0.0369
         }
       },
-      "sql_total_median_s": 0.2336
+      "sql_total_median_s": 0.2595
+    },
+    "polars_200m": {
+      "engine": "polars",
+      "version": "2.1.0",
+      "size": "200m",
+      "format": "parquet",
+      "cpus": 6,
+      "where": "container (6 CPU, 8 GiB)",
+      "startup_s": 0.111,
+      "process_wall_s": 20.37,
+      "peak_mem_mib": 3636,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 0.4539,
+          "first_s": 1.1513
+        },
+        "q2_high_card_groupby": {
+          "median_s": 0.4,
+          "first_s": 0.9454
+        },
+        "q3_join_daily": {
+          "median_s": 1.3068,
+          "first_s": 2.6241
+        },
+        "q4_distinct": {
+          "median_s": 1.3193,
+          "first_s": 1.3249
+        },
+        "q5_window_topn": {
+          "median_s": 0.3114,
+          "first_s": 0.3162
+        },
+        "q6_one_week": {
+          "median_s": 0.5339,
+          "first_s": 0.5194
+        }
+      },
+      "sql_total_median_s": 4.3253
     },
     "polars_50m": {
       "engine": "polars",
       "version": "2.1.0",
       "size": "50m",
+      "format": "parquet",
       "cpus": 6,
       "where": "container (6 CPU, 8 GiB)",
-      "startup_s": 0.101,
-      "process_wall_s": 5.04,
-      "peak_mem_mib": 1766,
+      "startup_s": 0.108,
+      "process_wall_s": 5.69,
+      "peak_mem_mib": 1768,
       "queries": {
         "q1_filter_agg": {
-          "median_s": 0.1208,
-          "first_s": 0.3427
+          "median_s": 0.1195,
+          "first_s": 0.4065
         },
         "q2_high_card_groupby": {
-          "median_s": 0.1082,
-          "first_s": 0.2669
+          "median_s": 0.1019,
+          "first_s": 0.2627
         },
         "q3_join_daily": {
-          "median_s": 0.3421,
-          "first_s": 0.7335
+          "median_s": 0.336,
+          "first_s": 0.7538
         },
         "q4_distinct": {
-          "median_s": 0.3091,
-          "first_s": 0.3233
+          "median_s": 0.313,
+          "first_s": 0.3098
         },
         "q5_window_topn": {
-          "median_s": 0.0859,
-          "first_s": 0.0929
+          "median_s": 0.0863,
+          "first_s": 0.0904
+        },
+        "q6_one_week": {
+          "median_s": 0.1459,
+          "first_s": 0.1419
         }
       },
-      "sql_total_median_s": 0.9661
+      "sql_total_median_s": 1.1026
+    },
+    "pyspark_100m": {
+      "engine": "pyspark",
+      "version": "3.5.5",
+      "size": "100m",
+      "format": "parquet",
+      "cpus": 6,
+      "where": "container (6 CPU, 8 GiB)",
+      "startup_s": 2.118,
+      "process_wall_s": 119.72,
+      "peak_mem_mib": 5473,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 0.8688,
+          "first_s": 2.0073
+        },
+        "q2_high_card_groupby": {
+          "median_s": 0.9258,
+          "first_s": 1.7195
+        },
+        "q3_join_daily": {
+          "median_s": 2.2016,
+          "first_s": 2.8066
+        },
+        "q4_distinct": {
+          "median_s": 2.5297,
+          "first_s": 3.1376
+        },
+        "q5_window_topn": {
+          "median_s": 0.653,
+          "first_s": 1.0258
+        },
+        "q6_one_week": {
+          "median_s": 1.8881,
+          "first_s": 2.1538
+        },
+        "q6_one_week_ntz": {
+          "median_s": 0.7843,
+          "first_s": 0.9372
+        },
+        "udf_builtin": {
+          "median_s": 0.4821,
+          "first_s": 0.621
+        },
+        "udf_tier_py": {
+          "median_s": 13.6808,
+          "first_s": 14.3544
+        },
+        "udf_tier_arrow": {
+          "median_s": 3.5694,
+          "first_s": 4.0549
+        }
+      },
+      "sql_total_median_s": 9.067
     },
     "pyspark_10m": {
       "engine": "pyspark",
       "version": "3.5.5",
       "size": "10m",
+      "format": "parquet",
       "cpus": 6,
       "where": "container (6 CPU, 8 GiB)",
-      "startup_s": 2.1,
-      "process_wall_s": 20.95,
-      "peak_mem_mib": 3631,
+      "startup_s": 2.695,
+      "process_wall_s": 23.96,
+      "peak_mem_mib": 4000,
       "queries": {
         "q1_filter_agg": {
-          "median_s": 0.2212,
-          "first_s": 1.0387
+          "median_s": 0.225,
+          "first_s": 1.0705
         },
         "q2_high_card_groupby": {
-          "median_s": 0.1974,
-          "first_s": 0.8303
+          "median_s": 0.1661,
+          "first_s": 0.7363
         },
         "q3_join_daily": {
-          "median_s": 0.3633,
-          "first_s": 0.6679
+          "median_s": 0.3348,
+          "first_s": 0.7142
         },
         "q4_distinct": {
-          "median_s": 0.344,
-          "first_s": 0.8202
+          "median_s": 0.3358,
+          "first_s": 0.767
         },
         "q5_window_topn": {
-          "median_s": 0.1948,
-          "first_s": 0.4001
+          "median_s": 0.1838,
+          "first_s": 0.3803
+        },
+        "q6_one_week": {
+          "median_s": 0.2995,
+          "first_s": 0.5592
+        },
+        "q6_one_week_ntz": {
+          "median_s": 0.1576,
+          "first_s": 0.2127
         },
         "udf_builtin": {
-          "median_s": 0.1039,
-          "first_s": 0.2318
+          "median_s": 0.111,
+          "first_s": 0.2051
         },
         "udf_tier_py": {
-          "median_s": 1.46,
-          "first_s": 1.917
+          "median_s": 1.448,
+          "first_s": 1.9735
         },
         "udf_tier_arrow": {
-          "median_s": 0.4908,
-          "first_s": 0.807
+          "median_s": 0.4585,
+          "first_s": 0.8035
         }
       },
-      "sql_total_median_s": 1.3207
+      "sql_total_median_s": 1.545
+    },
+    "pyspark_200m": {
+      "engine": "pyspark",
+      "version": "3.5.5",
+      "size": "200m",
+      "format": "parquet",
+      "cpus": 6,
+      "where": "container (6 CPU, 8 GiB)",
+      "startup_s": 2.177,
+      "process_wall_s": 210.17,
+      "peak_mem_mib": 7754,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 1.457,
+          "first_s": 2.7478
+        },
+        "q2_high_card_groupby": {
+          "median_s": 1.7743,
+          "first_s": 2.4544
+        },
+        "q3_join_daily": {
+          "median_s": 3.7364,
+          "first_s": 4.7181
+        },
+        "q4_distinct": {
+          "median_s": 4.603,
+          "first_s": 5.3233
+        },
+        "q5_window_topn": {
+          "median_s": 1.0217,
+          "first_s": 1.3653
+        },
+        "q6_one_week": {
+          "median_s": 3.3828,
+          "first_s": 3.5406
+        },
+        "q6_one_week_ntz": {
+          "median_s": 1.3359,
+          "first_s": 1.4126
+        },
+        "udf_builtin": {
+          "median_s": 0.8455,
+          "first_s": 1.0577
+        },
+        "udf_tier_py": {
+          "median_s": 24.7543,
+          "first_s": 26.1336
+        },
+        "udf_tier_arrow": {
+          "median_s": 6.8348,
+          "first_s": 7.5932
+        }
+      },
+      "sql_total_median_s": 15.9752
     },
     "pyspark_50m": {
       "engine": "pyspark",
       "version": "3.5.5",
       "size": "50m",
+      "format": "parquet",
       "cpus": 6,
       "where": "container (6 CPU, 8 GiB)",
-      "startup_s": 2.148,
-      "process_wall_s": 58.01,
-      "peak_mem_mib": 3616,
+      "startup_s": 2.081,
+      "process_wall_s": 63.77,
+      "peak_mem_mib": 4740,
       "queries": {
         "q1_filter_agg": {
-          "median_s": 0.4852,
-          "first_s": 1.3703
+          "median_s": 0.4779,
+          "first_s": 1.4195
         },
         "q2_high_card_groupby": {
-          "median_s": 0.4783,
-          "first_s": 0.9285
+          "median_s": 0.5013,
+          "first_s": 1.0368
         },
         "q3_join_daily": {
-          "median_s": 1.1137,
-          "first_s": 1.5731
+          "median_s": 1.113,
+          "first_s": 1.6128
         },
         "q4_distinct": {
-          "median_s": 1.2716,
-          "first_s": 1.9002
+          "median_s": 1.272,
+          "first_s": 1.9234
         },
         "q5_window_topn": {
-          "median_s": 0.3823,
-          "first_s": 0.7448
+          "median_s": 0.374,
+          "first_s": 0.6401
+        },
+        "q6_one_week": {
+          "median_s": 0.922,
+          "first_s": 1.0783
+        },
+        "q6_one_week_ntz": {
+          "median_s": 0.4277,
+          "first_s": 0.5895
         },
         "udf_builtin": {
-          "median_s": 0.273,
-          "first_s": 0.449
+          "median_s": 0.2631,
+          "first_s": 0.3763
         },
         "udf_tier_py": {
-          "median_s": 6.6129,
-          "first_s": 7.2357
+          "median_s": 6.5937,
+          "first_s": 7.0411
         },
         "udf_tier_arrow": {
-          "median_s": 1.8559,
-          "first_s": 2.2954
+          "median_s": 1.8098,
+          "first_s": 2.2638
         }
       },
-      "sql_total_median_s": 3.7311
+      "sql_total_median_s": 4.6602
+    },
+    "scala_100m": {
+      "engine": "spark-scala",
+      "version": "3.5.5",
+      "size": "100m",
+      "format": "parquet",
+      "cpus": 6,
+      "where": "container (6 CPU, 8 GiB)",
+      "startup_s": 1.06,
+      "process_wall_s": 49.78,
+      "peak_mem_mib": 5216,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 0.8686,
+          "first_s": 2.2201
+        },
+        "q2_high_card_groupby": {
+          "median_s": 0.8757,
+          "first_s": 1.4569
+        },
+        "q3_join_daily": {
+          "median_s": 2.0878,
+          "first_s": 2.872
+        },
+        "q4_distinct": {
+          "median_s": 2.513,
+          "first_s": 3.125
+        },
+        "q5_window_topn": {
+          "median_s": 0.6011,
+          "first_s": 0.9744
+        },
+        "q6_one_week": {
+          "median_s": 1.8472,
+          "first_s": 2.0078
+        },
+        "udf_tier_scala": {
+          "median_s": 1.2427,
+          "first_s": 1.7936
+        }
+      },
+      "sql_total_median_s": 8.7934
     },
     "scala_10m": {
       "engine": "spark-scala",
       "version": "3.5.5",
       "size": "10m",
+      "format": "parquet",
       "cpus": 6,
       "where": "container (6 CPU, 8 GiB)",
-      "startup_s": 0.937,
-      "process_wall_s": 14.05,
-      "peak_mem_mib": 3819,
+      "startup_s": 0.967,
+      "process_wall_s": 15.78,
+      "peak_mem_mib": 4420,
       "queries": {
         "q1_filter_agg": {
-          "median_s": 0.2581,
-          "first_s": 1.1163
+          "median_s": 0.2258,
+          "first_s": 1.1119
         },
         "q2_high_card_groupby": {
-          "median_s": 0.1998,
-          "first_s": 0.7868
+          "median_s": 0.1649,
+          "first_s": 0.6101
         },
         "q3_join_daily": {
-          "median_s": 0.4124,
-          "first_s": 0.8156
+          "median_s": 0.3504,
+          "first_s": 0.7101
         },
         "q4_distinct": {
-          "median_s": 0.3919,
-          "first_s": 0.9151
+          "median_s": 0.3577,
+          "first_s": 0.9113
         },
         "q5_window_topn": {
-          "median_s": 0.1808,
-          "first_s": 0.4147
+          "median_s": 0.1993,
+          "first_s": 0.4613
+        },
+        "q6_one_week": {
+          "median_s": 0.3143,
+          "first_s": 0.465
         },
         "udf_tier_scala": {
-          "median_s": 0.1938,
-          "first_s": 0.3441
+          "median_s": 0.1909,
+          "first_s": 0.3585
         }
       },
-      "sql_total_median_s": 1.443
+      "sql_total_median_s": 1.6125
+    },
+    "scala_200m": {
+      "engine": "spark-scala",
+      "version": "3.5.5",
+      "size": "200m",
+      "format": "parquet",
+      "cpus": 6,
+      "where": "container (6 CPU, 8 GiB)",
+      "startup_s": 1.0,
+      "process_wall_s": 82.67,
+      "peak_mem_mib": 7271,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 1.4503,
+          "first_s": 3.061
+        },
+        "q2_high_card_groupby": {
+          "median_s": 1.6309,
+          "first_s": 2.2602
+        },
+        "q3_join_daily": {
+          "median_s": 3.7202,
+          "first_s": 4.5105
+        },
+        "q4_distinct": {
+          "median_s": 4.6241,
+          "first_s": 5.3521
+        },
+        "q5_window_topn": {
+          "median_s": 1.1747,
+          "first_s": 1.5224
+        },
+        "q6_one_week": {
+          "median_s": 3.3222,
+          "first_s": 4.389
+        },
+        "udf_tier_scala": {
+          "median_s": 2.0088,
+          "first_s": 2.2485
+        }
+      },
+      "sql_total_median_s": 15.9224
     },
     "scala_50m": {
       "engine": "spark-scala",
       "version": "3.5.5",
       "size": "50m",
+      "format": "parquet",
       "cpus": 6,
       "where": "container (6 CPU, 8 GiB)",
-      "startup_s": 0.957,
-      "process_wall_s": 26.94,
-      "peak_mem_mib": 5055,
+      "startup_s": 0.985,
+      "process_wall_s": 31.0,
+      "peak_mem_mib": 5833,
       "queries": {
         "q1_filter_agg": {
-          "median_s": 0.4805,
-          "first_s": 1.5263
+          "median_s": 0.498,
+          "first_s": 1.5774
         },
         "q2_high_card_groupby": {
-          "median_s": 0.5489,
-          "first_s": 1.1094
+          "median_s": 0.511,
+          "first_s": 1.0499
         },
         "q3_join_daily": {
-          "median_s": 1.2575,
-          "first_s": 1.7253
+          "median_s": 1.0956,
+          "first_s": 1.6413
         },
         "q4_distinct": {
-          "median_s": 1.2696,
-          "first_s": 2.0253
+          "median_s": 1.3124,
+          "first_s": 2.0416
         },
         "q5_window_topn": {
           "median_s": 0.3721,
-          "first_s": 0.7208
+          "first_s": 0.7596
+        },
+        "q6_one_week": {
+          "median_s": 0.9797,
+          "first_s": 1.3682
         },
         "udf_tier_scala": {
-          "median_s": 0.6609,
-          "first_s": 0.9414
+          "median_s": 0.6655,
+          "first_s": 1.1325
         }
       },
-      "sql_total_median_s": 3.9286
+      "sql_total_median_s": 4.7687
     }
   },
   "checks": {
@@ -435,85 +1539,365 @@
       "q2_high_card_groupby": true,
       "q3_join_daily": true,
       "q4_distinct": true,
-      "q5_window_topn": true
+      "q5_window_topn": true,
+      "q6_one_week": true
+    },
+    "duckdb_10m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true
     },
     "host_datafusion_10m": {
       "q1_filter_agg": true,
       "q2_high_card_groupby": true,
       "q3_join_daily": true,
       "q4_distinct": true,
-      "q5_window_topn": true
+      "q5_window_topn": true,
+      "q6_one_week": true
+    },
+    "host_duckdb_10m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true
     },
     "host_polars_10m": {
       "q1_filter_agg": true,
       "q2_high_card_groupby": true,
       "q3_join_daily": true,
       "q4_distinct": true,
-      "q5_window_topn": true
+      "q5_window_topn": true,
+      "q6_one_week": true
     },
     "polars_10m": {
       "q1_filter_agg": true,
       "q2_high_card_groupby": true,
       "q3_join_daily": true,
       "q4_distinct": true,
-      "q5_window_topn": true
+      "q5_window_topn": true,
+      "q6_one_week": true
     },
     "pyspark_10m": {
       "q1_filter_agg": true,
       "q2_high_card_groupby": true,
       "q3_join_daily": true,
       "q4_distinct": true,
-      "q5_window_topn": true
+      "q5_window_topn": true,
+      "q6_one_week": true,
+      "q6_one_week_ntz": true
     },
     "scala_10m": {
       "q1_filter_agg": true,
       "q2_high_card_groupby": true,
       "q3_join_daily": true,
       "q4_distinct": true,
-      "q5_window_topn": true
+      "q5_window_topn": true,
+      "q6_one_week": true
     },
     "datafusion_50m": {
       "q1_filter_agg": true,
       "q2_high_card_groupby": true,
       "q3_join_daily": true,
       "q4_distinct": true,
-      "q5_window_topn": true
+      "q5_window_topn": true,
+      "q6_one_week": true
+    },
+    "duckdb_50m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true
     },
     "host_datafusion_50m": {
       "q1_filter_agg": true,
       "q2_high_card_groupby": true,
       "q3_join_daily": true,
       "q4_distinct": true,
-      "q5_window_topn": true
+      "q5_window_topn": true,
+      "q6_one_week": true
+    },
+    "host_duckdb_50m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true
     },
     "host_polars_50m": {
       "q1_filter_agg": true,
       "q2_high_card_groupby": true,
       "q3_join_daily": true,
       "q4_distinct": true,
-      "q5_window_topn": true
+      "q5_window_topn": true,
+      "q6_one_week": true
+    },
+    "iceberg_datafusion_50m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true
+    },
+    "iceberg_duckdb_50m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true
+    },
+    "iceberg_polars_50m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true
+    },
+    "iceberg_pyspark_50m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true,
+      "q6_one_week_ntz": true
     },
     "polars_50m": {
       "q1_filter_agg": true,
       "q2_high_card_groupby": true,
       "q3_join_daily": true,
       "q4_distinct": true,
-      "q5_window_topn": true
+      "q5_window_topn": true,
+      "q6_one_week": true
     },
     "pyspark_50m": {
       "q1_filter_agg": true,
       "q2_high_card_groupby": true,
       "q3_join_daily": true,
       "q4_distinct": true,
-      "q5_window_topn": true
+      "q5_window_topn": true,
+      "q6_one_week": true,
+      "q6_one_week_ntz": true
     },
     "scala_50m": {
       "q1_filter_agg": true,
       "q2_high_card_groupby": true,
       "q3_join_daily": true,
       "q4_distinct": true,
-      "q5_window_topn": true
+      "q5_window_topn": true,
+      "q6_one_week": true
+    },
+    "datafusion_100m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true
+    },
+    "duckdb_100m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true
+    },
+    "host_datafusion_100m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true
+    },
+    "host_duckdb_100m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true
+    },
+    "host_polars_100m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true
+    },
+    "polars_100m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true
+    },
+    "pyspark_100m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true,
+      "q6_one_week_ntz": true
+    },
+    "scala_100m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true
+    },
+    "duckdb_200m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true
+    },
+    "host_datafusion_200m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true
+    },
+    "host_duckdb_200m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true
+    },
+    "host_polars_200m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true
+    },
+    "iceberg_duckdb_200m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true
+    },
+    "iceberg_polars_200m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true
+    },
+    "iceberg_pyspark_200m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true,
+      "q6_one_week_ntz": true
+    },
+    "polars_200m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true
+    },
+    "pyspark_200m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true,
+      "q6_one_week_ntz": true
+    },
+    "scala_200m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true
     }
   },
+  "failures": {
+    "datafusion_200m": {
+      "exit_code": 137,
+      "peak_mem_mib": 8192,
+      "process_wall_s": 10.82
+    },
+    "iceberg_datafusion_200m": {
+      "exit_code": 137,
+      "peak_mem_mib": 8192,
+      "process_wall_s": 5.52
+    }
+  },
+  "iceberg": {
+    "200m": {
+      "size": "200m",
+      "partition_spec": "[\n  1000: start_ts_day: day(4)\n]",
+      "full_scan": {
+        "files": 92,
+        "bytes": 4515916921,
+        "rows": 200000000,
+        "plan_s": 0.004
+      },
+      "q6_one_week": {
+        "files": 20,
+        "bytes": 1053863291,
+        "rows": 46665755,
+        "plan_s": 0.0042
+      },
+      "write_log": "iceberg calls_200m: 92 files, 30 partitions, 4307 MiB, written in 59.1 s"
+    },
+    "50m": {
+      "size": "50m",
+      "partition_spec": "[\n  1000: start_ts_day: day(4)\n]",
+      "full_scan": {
+        "files": 30,
+        "bytes": 1128451058,
+        "rows": 50000000,
+        "plan_s": 0.0037
+      },
+      "q6_one_week": {
+        "files": 7,
+        "bytes": 263315042,
+        "rows": 11663783,
+        "plan_s": 0.0025
+      },
+      "write_log": "iceberg calls_50m: 30 files, 30 partitions, 1076 MiB, written in 17.1 s"
+    }
+  },
+  "sizes": [
+    "10m",
+    "50m",
+    "100m",
+    "200m"
+  ],
   "all_results_match": true
 }
