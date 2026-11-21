@@ -15,14 +15,14 @@ At 50M rows (1 GiB of Parquet), in equal 6 CPU / 8 GiB containers:
 |---|---:|---:|---:|---:|
 | Sum of 5 query medians | 0.97 s | 1.45 s | 3.73 s | 3.93 s |
 | Peak container memory | 1.7 GiB | 3.5 GiB | 3.5 GiB | 4.9 GiB |
-| Engine start-up (in process) | 0.07 s | 0.06 s | 2.1 s | 0.95 s + JVM |
+| Engine start-up (in process) | 0.10 s | 0.06 s | 2.1 s | 0.95 s + JVM |
 
 ## Decision
 
 - **Single-node engine (Polars or DataFusion)** when the input for one job fits on one machine
   after column and partition pruning, roughly up to tens of GiB of Parquet per job. That covers
   most ad-hoc analysis, feature engineering and data-quality jobs. Here they ran the same SQL
-  2.6 to 4 times faster with up to 2.8 times less memory and almost no start-up time.
+  2.6 to 4 times faster with up to 2.9 times less memory and almost no start-up time.
 - **Spark** when data or shuffle state does not fit on one node, when the job needs the cluster's
   fault tolerance, or when it must sit inside an existing platform (Cloudera Data Engineering,
   Iceberg tables with Spark-managed maintenance, Kerberos/Ranger-governed access).
