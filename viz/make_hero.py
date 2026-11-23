@@ -93,7 +93,8 @@ def main():
         (f"Iceberg Q6 reads {plan['q6_one_week']['files']} of {plan['full_scan']['files']} files: DuckDB {q(du, 'q6_one_week'):.2f} → {q(idu, 'q6_one_week'):.2f} s",
          f"Spark prunes only with a TIMESTAMP_NTZ literal: {q(ip, 'q6_one_week'):.2f} → {q(ip, 'q6_one_week_ntz'):.2f} s", GREEN),
         (f"Peak memory at 200M: DuckDB {du['peak_mem_mib'] / 1024:.1f} · Polars {po['peak_mem_mib'] / 1024:.1f} · Spark {p['peak_mem_mib'] / 1024:.1f} GiB",
-         "cgroup memory.peak of each 8 GiB container", PURPLE),
+         (f"DataFusion {s['engines']['datafusion_200m']['peak_mem_mib'] / 1024:.1f} GiB with mimalloc segments capped (killed at 8 GiB without)"
+          if "datafusion_200m" in s["engines"] else "cgroup memory.peak of each 8 GiB container"), PURPLE),
         (f"Python UDF {q(p, 'udf_tier_py'):.1f} s · Arrow {q(p, 'udf_tier_arrow'):.1f} s · built-in {q(p, 'udf_builtin'):.2f} s",
          f"same column on 200M rows · Scala UDF {q(sc, 'udf_tier_scala'):.2f} s", RED),
     ]

@@ -23,7 +23,7 @@ bench:  ## every engine, one container at a time (6 CPU, 8 GiB); SIZES="10m 50m 
 df-memory:  ## DataFusion memory diagnosis at 200M rows (8 variants, about 6 minutes; needs gen-large and image)
 	SIZE=200m bash bench/df_memory.sh
 
-ntz-repro:  ## Spark TIMESTAMP vs TIMESTAMP_NTZ pruning on a small Iceberg table (about 10 s after the image is pulled)
+ntz-repro:  ## Spark TIMESTAMP vs TIMESTAMP_NTZ pruning on a small Iceberg table (about a minute after the image is pulled)
 	docker run --rm -v "$(PWD)":/w -w /w --entrypoint python3 tabulario/spark-iceberg:3.5.5_1.8.1 examples/spark_ntz_pruning/repro.py
 
 collect:

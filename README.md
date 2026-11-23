@@ -6,9 +6,14 @@ The same six analytical SQL queries over the same synthetic telco call records, 
 200M rows, run by **PySpark**, **Scala Spark**, **Polars**, **Apache DataFusion** and **DuckDB**,
 each alone in a container with the same limits (6 CPU, 8 GiB). The data is read from a folder of
 Parquet files and, at 50M and 200M rows, from an **Apache Iceberg** table written by Spark. Every
-run's rows are checked against Spark's before any time counts: **234 of 234 query results are
-identical** across 38 runs. Two runs did not finish (DataFusion at 200M rows, killed at the
-memory limit); they are reported, not dropped.
+run's rows are checked against Spark's before any time counts: **240 of 240 query results are
+identical** across 39 runs. One run did not finish (DataFusion reading the 200M-row Iceberg table,
+killed at the memory limit in the first round); it is reported, not dropped. DataFusion's memory
+growth at 200M rows was traced to its bundled allocator and fixed with one environment variable
+([below](#datafusion-memory-at-200m-rows)).
+
+Since 2026-11-23 there is also a [self-contained reproduction](examples/spark_ntz_pruning) of the
+Spark TIMESTAMP vs TIMESTAMP_NTZ pruning finding.
 
 It answers five questions an AI/data architect gets asked:
 
@@ -28,22 +33,22 @@ are read from [`results/summary.json`](results/summary.json).
 <p align="center"><img src="docs/images/query_times.png" alt="Grouped bar charts of median query time per engine and query at 50M and 200M rows, log scale" width="100%"></p>
 <p align="center"><em>Figure 1. Median of three timed runs after one first run, log scale, at 50M and 200M rows.
 Polars and DuckDB lead on every query; Spark from Python and from Scala are within noise of each
-other. DataFusion has no bars at 200M rows: it was killed at the 8 GiB limit.</em></p>
+other. DataFusion at 200M rows runs with MIMALLOC_TARGET_SEGMENTS_PER_THREAD=2 (see Figure 7).</em></p>
 
 Median seconds at **200M rows** (4,150 MiB of Parquet):
 
 | Query | PySpark | Scala Spark | Polars | DuckDB | DataFusion |
 |---|---:|---:|---:|---:|---:|
-| Q1 filter + aggregate | 1.457 | 1.450 | 0.454 | 0.389 | killed |
-| Q2 high-cardinality group-by, top 100 | 1.774 | 1.631 | 0.400 | 0.551 | |
-| Q3 join cells + daily aggregate | 3.736 | 3.720 | 1.307 | 1.334 | |
-| Q4 count distinct subscribers per region | 4.603 | 4.624 | 1.319 | 1.314 | |
-| Q5 window top-3 cells per region | 1.022 | 1.175 | 0.311 | 0.496 | |
-| Q6 one week of 30 days, joined to cells | 3.383 | 3.322 | 0.534 | 0.693 | |
-| **Sum** | **15.975** | **15.922** | **4.325** | **4.777** | |
+| Q1 filter + aggregate | 1.457 | 1.450 | 0.454 | 0.389 | 0.544 |
+| Q2 high-cardinality group-by, top 100 | 1.774 | 1.631 | 0.400 | 0.551 | 0.693 |
+| Q3 join cells + daily aggregate | 3.736 | 3.720 | 1.307 | 1.334 | 1.682 |
+| Q4 count distinct subscribers per region | 4.603 | 4.624 | 1.319 | 1.314 | 1.559 |
+| Q5 window top-3 cells per region | 1.022 | 1.175 | 0.311 | 0.496 | 0.403 |
+| Q6 one week of 30 days, joined to cells | 3.383 | 3.322 | 0.534 | 0.693 | 0.652 |
+| **Sum** | **15.975** | **15.922** | **4.325** | **4.777** | **5.532** |
 
 At **50M rows** (1,038 MiB) the sums are 4.660 s (PySpark), 4.769 s (Scala), 1.103 s (Polars),
-1.217 s (DuckDB) and 1.632 s (DataFusion). Spark's first run of a query is up to 3.2 times slower
+1.217 s (DuckDB) and 1.647 s (DataFusion). Spark's first run of a query is up to 3.2 times slower
 than its median at 50M rows (PySpark Q1: 1.42 s first, 0.48 s median) and up to 2.1 times at 200M rows.
 DuckDB's and DataFusion's first runs are within 10% of their medians; Polars' first runs of Q1
 to Q3 are 2 to 3.4 times its medians.
@@ -52,22 +57,44 @@ to Q3 are 2 to 3.4 times its medians.
 
 <p align="center"><img src="docs/images/scaling.png" alt="Line charts: sum of six query medians and peak container memory against rows, 10M to 200M, per engine" width="100%"></p>
 <p align="center"><em>Figure 2. Left: sum of the six query medians as data grows (log-log). Right: peak
-container memory; the X marks DataFusion's killed run at 200M rows, the dashed line the 8 GiB limit.</em></p>
+container memory, the dashed line the 8 GiB limit. DataFusion runs with the mimalloc setting from Figure 7 at every size.</em></p>
 
 | Rows (Parquet) | PySpark | Scala Spark | Polars | DuckDB | DataFusion | PySpark / Polars |
 |---|---:|---:|---:|---:|---:|---:|
-| 10M (207 MiB) | 1.545 s | 1.613 s | 0.260 s | 0.310 s | 0.293 s | 5.9x |
-| 50M (1,038 MiB) | 4.660 s | 4.769 s | 1.103 s | 1.217 s | 1.632 s | 4.2x |
-| 100M (2,075 MiB) | 9.067 s | 8.793 s | 2.146 s | 2.373 s | 2.896 s | 4.2x |
-| 200M (4,150 MiB) | 15.975 s | 15.922 s | 4.325 s | 4.777 s | killed (exit 137) | 3.7x |
-| Peak memory at 200M | 7.6 GiB | 7.1 GiB | 3.6 GiB | 3.2 GiB | 8 GiB (limit) | |
+| 10M (207 MiB) | 1.545 s | 1.613 s | 0.260 s | 0.310 s | 0.301 s | 5.9x |
+| 50M (1,038 MiB) | 4.660 s | 4.769 s | 1.103 s | 1.217 s | 1.647 s | 4.2x |
+| 100M (2,075 MiB) | 9.067 s | 8.793 s | 2.146 s | 2.373 s | 2.838 s | 4.2x |
+| 200M (4,150 MiB) | 15.975 s | 15.922 s | 4.325 s | 4.777 s | 5.532 s | 3.7x |
+| Peak memory at 200M | 7.6 GiB | 7.1 GiB | 3.6 GiB | 3.2 GiB | 2.7 GiB | |
 
 From 100M to 200M rows the single-node engines take 2.0 times as long and Spark 1.8 times: Spark's
-fixed cost per query is a smaller share of a bigger job, so its gap narrows, slowly. DataFusion's
-resident memory grows with each repeated query in one session (Q1 at 200M rows: 0.9, 1.7, 2.5,
-3.3 GiB after runs 1 to 4), which ends the 200M-row run on Q3; a bounded spill pool and glibc
-allocator settings did not change it ([ADR 0006](docs/adr/0006-scaling-to-200m-rows.md)). On the
-host without a memory limit DataFusion finished 200M rows in 2.917 s.
+fixed cost per query is a smaller share of a bigger job, so its gap narrows, slowly. In the first
+round DataFusion was killed at 200M rows; with the allocator setting below it finishes in 5.532 s
+using 2.7 GiB, the least memory of the five engines
+([ADR 0006](docs/adr/0006-scaling-to-200m-rows.md), [ADR 0007](docs/adr/0007-datafusion-memory-and-mimalloc.md)).
+On the host without a memory limit DataFusion finished 200M rows in 2.917 s.
+
+### DataFusion memory at 200M rows
+
+<p align="center"><img src="docs/images/df_memory.png" alt="Left: DataFusion resident memory after each of 24 query runs at 200M rows for eight variants; six are killed at Q3, the mimalloc segment cap and a 12 s pause stay flat. Right: memory added per run next to the compressed size of the column read, for three columns" width="100%"></p>
+<p align="center"><em>Figure 7. Left: resident memory after each query run in one DataFusion process (six queries, four
+runs each). Every variant without the mimalloc segment cap or a pause was killed on Q3. Right: the memory
+added per run is about the compressed size of the column the query reads.</em></p>
+
+`make df-memory` runs the six queries four times in one process at 200M rows in the benchmark
+container, with eight variants. glibc settings, a 4 GiB spill pool and a new session for every run
+were all killed on Q3's third run: the datafusion-python wheel bundles mimalloc, and the memory is
+not held by DataFusion's operators. What grows is about the compressed bytes each run reads
+(0.29, 0.48 and 0.81 GiB per run for columns of 0.25, 0.41 and 0.80 GiB), kept in the per-thread
+heaps of tokio's blocking I/O threads. A 12 s pause lets those threads exit (44 → 7 threads) and
+memory stays at 1.4 GiB; `MIMALLOC_TARGET_SEGMENTS_PER_THREAD=2` keeps it at about 2–3 GiB without
+the pause and is now the default in `bench/run_all.sh` (`DF_MIMALLOC_SEGMENTS=0` turns it off).
+
+| DataFusion peak container memory | 10M | 50M | 100M | 200M |
+|---|---:|---:|---:|---:|
+| Default allocator settings (first round) | 1,653 MiB | 3,575 MiB | 6,652 MiB | killed at 8,192 |
+| `MIMALLOC_TARGET_SEGMENTS_PER_THREAD=2` | 679 MiB | 1,080 MiB | 1,841 MiB | 2,776 MiB |
+| Sum of six medians, default → capped | 0.293 → 0.301 s | 1.632 → 1.647 s | 2.896 → 2.838 s | – → 5.532 s |
 
 ### Iceberg reads
 
@@ -92,12 +119,23 @@ and 20 of 92 files, 23% of the bytes, in 2.5 to 4.2 ms. Median seconds at 200M r
 
 At 50M rows DataFusion read Iceberg too (through PyIceberg's file plan, since the native
 `pyiceberg-core` provider is built for DataFusion 54, not 55): Q6 0.180 → 0.108 s, but peak memory
-3.5 → 7.3 GiB. Its 200M-row Iceberg run was killed like the Parquet one.
+3.5 → 7.3 GiB. Its 200M-row Iceberg run was killed in the first round and was not re-run with the
+allocator setting (the 200M Iceberg tables were removed to save disk).
 
 The `start_ts` column has no time zone, so Spark types it `TIMESTAMP_NTZ`; the portable zoned
 literal makes Spark cast the column, and EXPLAIN shows the date range never reaches the Iceberg
 scan. Written as `TIMESTAMP_NTZ`, the filter is pushed down and Q6 drops from 2.989 s to 0.742 s
 ([ADR 0005](docs/adr/0005-iceberg-reads-from-single-node-engines.md)).
+
+<p align="center"><img src="docs/images/ntz_pruning.png" alt="Bar charts: a one-week filter on a 30-file Iceberg table reads 30 files in 188 ms with a TIMESTAMP literal, 7 files in 44 ms with a TIMESTAMP_NTZ literal and 7 files in 42 ms with the session timestampType set to NTZ" width="100%"></p>
+<p align="center"><em>Figure 8. The pruning finding on its own, from <a href="examples/spark_ntz_pruning">examples/spark_ntz_pruning</a>:
+30 days, 6M rows, one file per day. The same 1,400,000 rows come back every time.</em></p>
+
+`make ntz-repro` builds a small day-partitioned Iceberg table inside the Spark image and runs the
+same one-week filter three ways. With the portable literal Spark casts the column and reads all
+30 files (188 ms); with a `TIMESTAMP_NTZ` literal, or with `spark.sql.timestampType=TIMESTAMP_NTZ`
+for the session, it reads 7 and skips 23 (44 and 42 ms). The session setting fixes existing SQL
+without rewriting it, but changes how every zone-less literal in that session is typed.
 
 ### Whole run and memory
 
@@ -144,7 +182,8 @@ queries at 200M rows sum to 2.248 s (Polars), 2.421 s (DuckDB) and 2.917 s (Data
   In Spark, check that filters actually reach the scan: a zoned literal on a zone-less column
   silently turns pruning off.
 - **Memory decides where one node stops**, not speed: at 200M rows Spark used 7.6 of 8 GiB and
-  DataFusion did not finish, while DuckDB and Polars stayed under 3.7 GiB.
+  DuckDB, Polars and DataFusion stayed under 3.7 GiB. DataFusion only after capping its
+  allocator's per-thread caches; with defaults it was killed at 8 GiB.
 
 ## How it works
 
@@ -179,6 +218,8 @@ flowchart LR
 | [`bench/run_python_engine.py`](bench/run_python_engine.py) | Polars (`SQLContext` over lazy scans), DataFusion (`SessionContext`) and DuckDB (views over `read_parquet`); with `iceberg`, `scan_iceberg`, PyIceberg's file plan and `iceberg_scan`. |
 | [`bench/Dockerfile.engines`](bench/Dockerfile.engines) | The single-node engines image, with DuckDB's iceberg extension installed at build time. |
 | [`bench/run_all.sh`](bench/run_all.sh) | Runs every engine in its own container, records cgroup peak memory, host wall time and the exit code of a failed run, then the Iceberg stage. |
+| [`bench/df_memory.py`](bench/df_memory.py), [`bench/df_column_probe.py`](bench/df_column_probe.py) | DataFusion memory diagnosis: eight variants over 24 query runs at 200M rows, and memory added per run per column (`make df-memory`). |
+| [`examples/spark_ntz_pruning`](examples/spark_ntz_pruning) | Self-contained reproduction of the Spark TIMESTAMP vs TIMESTAMP_NTZ Iceberg pruning finding (`make ntz-repro`). |
 | [`bench/collect.py`](bench/collect.py) | Builds `results/summary.json`, checks each run's rows against PySpark's, and lists failed runs and Iceberg plans. |
 | [`tests/`](tests) | Polars, DataFusion and DuckDB agree on all six queries from Parquet and from an Iceberg table written in two snapshots; tolerance unit tests. |
 
@@ -190,6 +231,7 @@ Decisions are recorded as ADRs:
 - [ADR 0004: DuckDB as a single-node engine next to Polars and DataFusion](docs/adr/0004-duckdb-as-a-single-node-engine.md)
 - [ADR 0005: Reading Iceberg tables from single-node engines](docs/adr/0005-iceberg-reads-from-single-node-engines.md)
 - [ADR 0006: What changes between 10M and 200M rows on one node](docs/adr/0006-scaling-to-200m-rows.md)
+- [ADR 0007: DataFusion's memory growth comes from mimalloc's per-thread segments](docs/adr/0007-datafusion-memory-and-mimalloc.md)
 
 ## Enterprise mapping
 
@@ -231,9 +273,11 @@ make collect test charts  # summary.json, correctness tests (9), images
   results say nothing about multi-node shuffles, executor failures or terabyte inputs, which is
   where Spark is built to win. 200M rows is the largest size measured; the trend in Figure 2
   should not be extrapolated to a cluster.
-- **DataFusion's memory growth is measured, not explained.** Resident memory grows with each
-  repeat of a query in one session; glibc allocator settings and a 4 GiB spill pool did not change
-  it. With a fresh session per query it might finish 200M rows; that was not run.
+- **DataFusion's memory fix is an allocator setting, explained by elimination.** Eight variants
+  point to mimalloc's per-thread heaps on tokio's I/O threads; mimalloc itself was not traced. The
+  setting was measured on this workload only (six queries, one process); a service with a
+  different query mix should measure its own resident memory. DataFusion's 200M-row Iceberg read
+  was not re-run.
 - **Iceberg in a Hadoop catalog, append-only.** No REST or Hive catalog, no delete files, no
   schema evolution, no compaction. DataFusion reads Iceberg through PyIceberg's file plan, not a
   native reader, and refuses tables with delete files.
@@ -259,7 +303,7 @@ make collect test charts  # summary.json, correctness tests (9), images
 - Repeat on a 3-node Spark cluster with the same queries at 500M+ rows to find the crossover point.
 - Add Apache DataFusion Comet as a Spark plug-in and measure it on the same SQL.
 - Read the Iceberg tables through a REST catalog, after row-level deletes and compaction.
-- Isolate DataFusion's memory growth (one session per query, other allocators) and report it upstream if it reproduces.
+- Report the DataFusion memory growth upstream with `bench/df_memory.py` as the reproduction, and re-run the 200M Iceberg read.
 - Cold-cache runs (drop caches between runs) and more repeats.
 
 ## Related MasterFabric repositories

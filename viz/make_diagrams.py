@@ -36,7 +36,7 @@ def setup():
     d.text((1345, 316), "cgroup memory.peak", font=font(18, 600), fill=GREY)
     d.text((1345, 352), "a killed run is", font=font(18, 600), fill=GREY)
     d.text((1345, 378), "recorded, not hidden", font=font(18, 600), fill=GREY)
-    box(d, (1345, 600, 1570, 840), "collect.py", ["rows equal?", f"{ok_runs}/{runs} runs", "6/6 queries each", f"{fails} runs killed"],
+    box(d, (1345, 600, 1570, 840), "collect.py", ["rows equal?", f"{ok_runs}/{runs} runs", "6/6 queries each", f"{fails} run{'' if fails == 1 else 's'} killed"],
         RED, title_size=22, line_size=17)
     arrow(d, (1320, 720), (1345, 720), RED)
     arrow(d, (390, 405), (470, 470), GREEN)
