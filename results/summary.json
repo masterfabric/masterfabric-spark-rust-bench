@@ -7,36 +7,36 @@
       "format": "parquet",
       "cpus": 6,
       "where": "container (6 CPU, 8 GiB)",
-      "startup_s": 0.077,
-      "process_wall_s": 12.15,
-      "peak_mem_mib": 6652,
+      "startup_s": 0.084,
+      "process_wall_s": 12.23,
+      "peak_mem_mib": 1841,
       "queries": {
         "q1_filter_agg": {
-          "median_s": 0.2995,
-          "first_s": 0.292
+          "median_s": 0.3069,
+          "first_s": 0.5042
         },
         "q2_high_card_groupby": {
-          "median_s": 0.316,
-          "first_s": 0.3141
+          "median_s": 0.3274,
+          "first_s": 0.3716
         },
         "q3_join_daily": {
-          "median_s": 0.9129,
-          "first_s": 0.8861
+          "median_s": 0.8956,
+          "first_s": 1.1633
         },
         "q4_distinct": {
-          "median_s": 0.8225,
-          "first_s": 0.9742
+          "median_s": 0.7893,
+          "first_s": 0.773
         },
         "q5_window_topn": {
-          "median_s": 0.19,
-          "first_s": 0.1976
+          "median_s": 0.1932,
+          "first_s": 0.2041
         },
         "q6_one_week": {
-          "median_s": 0.3548,
-          "first_s": 0.3217
+          "median_s": 0.3258,
+          "first_s": 0.3312
         }
       },
-      "sql_total_median_s": 2.8957
+      "sql_total_median_s": 2.8382
     },
     "datafusion_10m": {
       "engine": "datafusion",
@@ -45,36 +45,74 @@
       "format": "parquet",
       "cpus": 6,
       "where": "container (6 CPU, 8 GiB)",
-      "startup_s": 0.05,
-      "process_wall_s": 1.45,
-      "peak_mem_mib": 1653,
+      "startup_s": 0.088,
+      "process_wall_s": 1.75,
+      "peak_mem_mib": 679,
       "queries": {
         "q1_filter_agg": {
-          "median_s": 0.0353,
-          "first_s": 0.0354
+          "median_s": 0.036,
+          "first_s": 0.0657
         },
         "q2_high_card_groupby": {
-          "median_s": 0.0286,
-          "first_s": 0.0282
+          "median_s": 0.0316,
+          "first_s": 0.0539
         },
         "q3_join_daily": {
-          "median_s": 0.0941,
-          "first_s": 0.0962
+          "median_s": 0.0952,
+          "first_s": 0.1852
         },
         "q4_distinct": {
-          "median_s": 0.0667,
-          "first_s": 0.0735
+          "median_s": 0.0706,
+          "first_s": 0.0775
         },
         "q5_window_topn": {
-          "median_s": 0.0251,
-          "first_s": 0.027
+          "median_s": 0.0264,
+          "first_s": 0.0286
         },
         "q6_one_week": {
-          "median_s": 0.0431,
-          "first_s": 0.0563
+          "median_s": 0.0414,
+          "first_s": 0.0408
         }
       },
-      "sql_total_median_s": 0.2929
+      "sql_total_median_s": 0.3012
+    },
+    "datafusion_200m": {
+      "engine": "datafusion",
+      "version": "55.0.0",
+      "size": "200m",
+      "format": "parquet",
+      "cpus": 6,
+      "where": "container (6 CPU, 8 GiB)",
+      "startup_s": 0.079,
+      "process_wall_s": 23.09,
+      "peak_mem_mib": 2776,
+      "queries": {
+        "q1_filter_agg": {
+          "median_s": 0.5441,
+          "first_s": 0.6875
+        },
+        "q2_high_card_groupby": {
+          "median_s": 0.6927,
+          "first_s": 0.8526
+        },
+        "q3_join_daily": {
+          "median_s": 1.6822,
+          "first_s": 1.9997
+        },
+        "q4_distinct": {
+          "median_s": 1.5585,
+          "first_s": 1.5587
+        },
+        "q5_window_topn": {
+          "median_s": 0.4025,
+          "first_s": 0.3716
+        },
+        "q6_one_week": {
+          "median_s": 0.6516,
+          "first_s": 0.7041
+        }
+      },
+      "sql_total_median_s": 5.5316
     },
     "datafusion_50m": {
       "engine": "datafusion",
@@ -83,36 +121,36 @@
       "format": "parquet",
       "cpus": 6,
       "where": "container (6 CPU, 8 GiB)",
-      "startup_s": 0.068,
-      "process_wall_s": 6.8,
-      "peak_mem_mib": 3575,
+      "startup_s": 0.063,
+      "process_wall_s": 7.13,
+      "peak_mem_mib": 1080,
       "queries": {
         "q1_filter_agg": {
-          "median_s": 0.1606,
-          "first_s": 0.1686
+          "median_s": 0.1726,
+          "first_s": 0.2158
         },
         "q2_high_card_groupby": {
-          "median_s": 0.1846,
-          "first_s": 0.172
+          "median_s": 0.1637,
+          "first_s": 0.2141
         },
         "q3_join_daily": {
-          "median_s": 0.5864,
-          "first_s": 0.5278
+          "median_s": 0.5449,
+          "first_s": 0.7121
         },
         "q4_distinct": {
-          "median_s": 0.4156,
-          "first_s": 0.439
+          "median_s": 0.4434,
+          "first_s": 0.4336
         },
         "q5_window_topn": {
-          "median_s": 0.1049,
-          "first_s": 0.1127
+          "median_s": 0.1158,
+          "first_s": 0.1142
         },
         "q6_one_week": {
-          "median_s": 0.1798,
-          "first_s": 0.1834
+          "median_s": 0.2062,
+          "first_s": 0.2208
         }
       },
-      "sql_total_median_s": 1.6319
+      "sql_total_median_s": 1.6466
     },
     "duckdb_100m": {
       "engine": "duckdb",
@@ -729,36 +767,36 @@
       "format": "iceberg",
       "cpus": 6,
       "where": "container (6 CPU, 8 GiB)",
-      "startup_s": 0.317,
-      "process_wall_s": 5.87,
-      "peak_mem_mib": 7455,
+      "startup_s": 0.284,
+      "process_wall_s": 5.65,
+      "peak_mem_mib": 2680,
       "queries": {
         "q1_filter_agg": {
-          "median_s": 0.1418,
-          "first_s": 0.1754
+          "median_s": 0.1436,
+          "first_s": 0.1562
         },
         "q2_high_card_groupby": {
-          "median_s": 0.1179,
-          "first_s": 0.1242
+          "median_s": 0.125,
+          "first_s": 0.1265
         },
         "q3_join_daily": {
-          "median_s": 0.4381,
-          "first_s": 0.4286
+          "median_s": 0.4438,
+          "first_s": 0.4339
         },
         "q4_distinct": {
-          "median_s": 0.3222,
-          "first_s": 0.3493
+          "median_s": 0.323,
+          "first_s": 0.3383
         },
         "q5_window_topn": {
-          "median_s": 0.1334,
-          "first_s": 0.14
+          "median_s": 0.1276,
+          "first_s": 0.1153
         },
         "q6_one_week": {
-          "median_s": 0.1081,
-          "first_s": 0.1075
+          "median_s": 0.0988,
+          "first_s": 0.1025
         }
       },
-      "sql_total_median_s": 1.2615
+      "sql_total_median_s": 1.2618
     },
     "iceberg_duckdb_200m": {
       "engine": "duckdb",
@@ -805,36 +843,36 @@
       "format": "iceberg",
       "cpus": 6,
       "where": "container (6 CPU, 8 GiB)",
-      "startup_s": 0.754,
-      "process_wall_s": 5.79,
-      "peak_mem_mib": 1401,
+      "startup_s": 0.606,
+      "process_wall_s": 5.75,
+      "peak_mem_mib": 1382,
       "queries": {
         "q1_filter_agg": {
-          "median_s": 0.1104,
-          "first_s": 0.1241
+          "median_s": 0.1143,
+          "first_s": 0.134
         },
         "q2_high_card_groupby": {
-          "median_s": 0.135,
-          "first_s": 0.1347
+          "median_s": 0.1384,
+          "first_s": 0.1403
         },
         "q3_join_daily": {
-          "median_s": 0.3794,
-          "first_s": 0.3736
+          "median_s": 0.3623,
+          "first_s": 0.3695
         },
         "q4_distinct": {
-          "median_s": 0.3208,
-          "first_s": 0.3233
+          "median_s": 0.336,
+          "first_s": 0.3734
         },
         "q5_window_topn": {
-          "median_s": 0.1419,
-          "first_s": 0.1406
+          "median_s": 0.1393,
+          "first_s": 0.1401
         },
         "q6_one_week": {
-          "median_s": 0.116,
-          "first_s": 0.1174
+          "median_s": 0.122,
+          "first_s": 0.1187
         }
       },
-      "sql_total_median_s": 1.2035
+      "sql_total_median_s": 1.2123
     },
     "iceberg_polars_200m": {
       "engine": "polars",
@@ -881,36 +919,36 @@
       "format": "iceberg",
       "cpus": 6,
       "where": "container (6 CPU, 8 GiB)",
-      "startup_s": 0.272,
-      "process_wall_s": 5.12,
-      "peak_mem_mib": 1378,
+      "startup_s": 0.265,
+      "process_wall_s": 5.5,
+      "peak_mem_mib": 1365,
       "queries": {
         "q1_filter_agg": {
-          "median_s": 0.1186,
-          "first_s": 0.2533
+          "median_s": 0.1263,
+          "first_s": 0.2953
         },
         "q2_high_card_groupby": {
-          "median_s": 0.1053,
-          "first_s": 0.1161
+          "median_s": 0.1163,
+          "first_s": 0.1668
         },
         "q3_join_daily": {
-          "median_s": 0.358,
-          "first_s": 0.3967
+          "median_s": 0.3674,
+          "first_s": 0.5321
         },
         "q4_distinct": {
-          "median_s": 0.3235,
-          "first_s": 0.3315
+          "median_s": 0.3313,
+          "first_s": 0.334
         },
         "q5_window_topn": {
-          "median_s": 0.0998,
-          "first_s": 0.1057
+          "median_s": 0.0987,
+          "first_s": 0.0986
         },
         "q6_one_week": {
-          "median_s": 0.0863,
-          "first_s": 0.0981
+          "median_s": 0.0971,
+          "first_s": 0.1016
         }
       },
-      "sql_total_median_s": 1.0915
+      "sql_total_median_s": 1.1371
     },
     "iceberg_pyspark_200m": {
       "engine": "pyspark",
@@ -961,40 +999,40 @@
       "format": "iceberg",
       "cpus": 6,
       "where": "container (6 CPU, 8 GiB)",
-      "startup_s": 2.0,
-      "process_wall_s": 28.13,
-      "peak_mem_mib": 3983,
+      "startup_s": 2.497,
+      "process_wall_s": 29.46,
+      "peak_mem_mib": 4607,
       "queries": {
         "q1_filter_agg": {
-          "median_s": 0.5059,
-          "first_s": 2.2063
+          "median_s": 0.5243,
+          "first_s": 2.1864
         },
         "q2_high_card_groupby": {
-          "median_s": 0.5969,
-          "first_s": 1.0537
+          "median_s": 0.5774,
+          "first_s": 1.0989
         },
         "q3_join_daily": {
-          "median_s": 1.1871,
-          "first_s": 1.6386
+          "median_s": 1.1861,
+          "first_s": 1.5625
         },
         "q4_distinct": {
-          "median_s": 1.2592,
-          "first_s": 1.8676
+          "median_s": 1.3752,
+          "first_s": 1.9941
         },
         "q5_window_topn": {
-          "median_s": 0.3681,
-          "first_s": 0.6655
+          "median_s": 0.4005,
+          "first_s": 0.7409
         },
         "q6_one_week": {
-          "median_s": 1.0158,
-          "first_s": 1.1821
+          "median_s": 1.0512,
+          "first_s": 1.4562
         },
         "q6_one_week_ntz": {
-          "median_s": 0.3277,
-          "first_s": 0.4305
+          "median_s": 0.3622,
+          "first_s": 0.499
         }
       },
-      "sql_total_median_s": 4.933
+      "sql_total_median_s": 5.1147
     },
     "polars_100m": {
       "engine": "polars",
@@ -1762,6 +1800,14 @@
       "q5_window_topn": true,
       "q6_one_week": true
     },
+    "datafusion_200m": {
+      "q1_filter_agg": true,
+      "q2_high_card_groupby": true,
+      "q3_join_daily": true,
+      "q4_distinct": true,
+      "q5_window_topn": true,
+      "q6_one_week": true
+    },
     "duckdb_200m": {
       "q1_filter_agg": true,
       "q2_high_card_groupby": true,
@@ -1846,11 +1892,6 @@
     }
   },
   "failures": {
-    "datafusion_200m": {
-      "exit_code": 137,
-      "peak_mem_mib": 8192,
-      "process_wall_s": 10.82
-    },
     "iceberg_datafusion_200m": {
       "exit_code": 137,
       "peak_mem_mib": 8192,
@@ -1882,15 +1923,15 @@
         "files": 30,
         "bytes": 1128451058,
         "rows": 50000000,
-        "plan_s": 0.0037
+        "plan_s": 0.0038
       },
       "q6_one_week": {
         "files": 7,
         "bytes": 263315042,
         "rows": 11663783,
-        "plan_s": 0.0025
+        "plan_s": 0.0028
       },
-      "write_log": "iceberg calls_50m: 30 files, 30 partitions, 1076 MiB, written in 17.1 s"
+      "write_log": "iceberg calls_50m: 30 files, 30 partitions, 1076 MiB, written in 19.3 s"
     }
   },
   "sizes": [
