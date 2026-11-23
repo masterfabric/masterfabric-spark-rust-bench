@@ -132,8 +132,65 @@ def iceberg():
     fig.tight_layout(); fig.savefig(IMG / "iceberg.png"); plt.close(fig)
 
 
+def df_memory():
+    """DataFusion at 200M rows: resident memory after each of 24 query runs, per configuration."""
+    d = json.loads((RESULTS / "df_memory_200m.json").read_text())["variants"]
+    show = [("baseline", "default (as in the first run)", HEX["RED"], "-"),
+            ("spill_pool_4g", "fair spill pool 4 GiB", HEX["ORANGE"], "--"),
+            ("glibc_arena2", "MALLOC_ARENA_MAX=2 (glibc)", HEX["YELLOW"], ":"),
+            ("session_per_run", "new SessionContext per run", HEX["GREY"], "-."),
+            ("mimalloc_purge0", "MIMALLOC_PURGE_DELAY=0", HEX["WHITE"], ":"),
+            ("mimalloc_segments2", "MIMALLOC_TARGET_SEGMENTS_PER_THREAD=2", HEX["GREEN"], "-"),
+            ("pause12", "12 s pause between runs (idle I/O threads exit)", HEX["ICE"], "-")]
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=(17, 5.2), gridspec_kw={"width_ratios": [1.6, 1]})
+    labels = None
+    for v, lab, col, ls in show:
+        runs = d[v]["runs"]
+        a1.plot(range(1, len(runs) + 1), [r["rss_gib"] for r in runs], ls, color=col, lw=2, label=lab, marker="o", ms=3)
+        if d[v]["exit"]:
+            a1.scatter([len(runs) + 1], [8.0], marker="X", s=110, color=col, zorder=5)
+        labels = [r["query"].split("_")[0].upper() for r in runs] if len(runs) == 24 else labels
+    a1.axhline(8, color=HEX["RED"], lw=1, ls="--"); a1.text(0.6, 7.75, "container limit 8 GiB; X = killed (exit 137)", color=HEX["RED"], fontsize=9, va="top")
+    a1.set_xticks([1 + 4 * i for i in range(6)], ["Q1", "Q2", "Q3", "Q4", "Q5", "Q6"])
+    a1.set_xlabel("query run (each query 4 times, in benchmark order)"); a1.set_ylabel("resident memory after the run (GiB)")
+    a1.set_ylim(0, 8.6); a1.legend(fontsize=8.5, loc="upper right")
+    a1.set_title("DataFusion 55, 200M rows, one process · 6 CPU / 8 GiB", loc="left")
+    p = json.loads((RESULTS / "df_column_probe_200m.json").read_text())["columns"]
+    cols = [f"sum({c})" for c in p]
+    growth = {f"sum({c})": (v["added_per_run_gib"], v["compressed_column_gib"]) for c, v in p.items()}
+    xs = range(len(cols))
+    a2.bar([x - 0.2 for x in xs], [growth[c][0] for c in cols], 0.38, color=HEX["PURPLE"], label="memory added per run")
+    a2.bar([x + 0.2 for x in xs], [growth[c][1] for c in cols], 0.38, color=HEX["GREY"], label="compressed size of the column read")
+    for x, c in zip(xs, cols):
+        a2.text(x - 0.2, growth[c][0] + 0.02, f"{growth[c][0]:.2f}", ha="center", fontsize=9)
+        a2.text(x + 0.2, growth[c][1] + 0.02, f"{growth[c][1]:.2f}", ha="center", fontsize=9)
+    a2.set_xticks(list(xs), cols); a2.set_ylabel("GiB"); a2.set_ylim(0, 1.1); a2.legend(fontsize=9, loc="upper left")
+    a2.set_title("What grows: about the bytes each run reads", loc="left")
+    fig.tight_layout(); fig.savefig(IMG / "df_memory.png"); plt.close(fig)
+
+
+def ntz_repro():
+    d = json.loads((RESULTS.parent / "examples" / "spark_ntz_pruning" / "result.json").read_text())
+    v = d["variants"]
+    labs = ["A  TIMESTAMP '…'\n(portable literal)", "B  TIMESTAMP_NTZ '…'", "C  TIMESTAMP '…' with\nspark.sql.timestampType=NTZ"]
+    cols = [HEX["RED"], HEX["GREEN"], HEX["GREEN"]]
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=(15, 4.6))
+    xs = range(3)
+    a1.bar(xs, [x["resultDataFiles"] for x in v], 0.55, color=cols)
+    for x, r in zip(xs, v):
+        a1.text(x, r["resultDataFiles"] + 0.6, f"{r['resultDataFiles']} read · {r['skippedDataFiles']} skipped", ha="center", fontsize=10)
+    a1.set_xticks(list(xs), labs, fontsize=9); a1.set_ylim(0, d["table_files"] * 1.25)
+    a1.set_ylabel("data files the Iceberg scan read"); a1.set_title(f"One-week filter on a {d['days']}-day table ({d['table_files']} files)", loc="left")
+    a2.bar(xs, [x["median_s_of_5"] * 1000 for x in v], 0.55, color=cols)
+    for x, r in zip(xs, v):
+        a2.text(x, r["median_s_of_5"] * 1000 + 4, f"{r['median_s_of_5'] * 1000:.0f} ms", ha="center", fontsize=10)
+    a2.set_xticks(list(xs), labs, fontsize=9); a2.set_ylabel("median of 5 runs (ms)")
+    a2.set_title(f"Same {v[0]['rows']:,} rows returned every time · Spark {d['spark']}", loc="left")
+    fig.tight_layout(); fig.savefig(IMG / "ntz_pruning.png"); plt.close(fig)
+
+
 if __name__ == "__main__":
     IMG.mkdir(parents=True, exist_ok=True)
-    for f in (query_times, overhead, udf, scaling, iceberg):
+    for f in (query_times, overhead, udf, scaling, iceberg, df_memory, ntz_repro):
         f()
     print("charts written")
