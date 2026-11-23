@@ -1,0 +1,47 @@
+{
+ "spark": "3.5.5",
+ "table_files": 30,
+ "days": 30,
+ "rows": 6000000,
+ "variants": [
+  {
+   "variant": "A zoned literal",
+   "sql_literal": "TIMESTAMP",
+   "session_timestampType": "TIMESTAMP_LTZ",
+   "rows": 1400000,
+   "revenue": 6719995.3,
+   "median_s_of_5": 0.1875,
+   "spark_filter": "+- *(1) Filter ((cast(start_ts#169 as timestamp) >= 2026-10-08 00:00:00) AND (cast(start_ts#169 as timestamp) < 2026-10-15 00:00:00))",
+   "resultDataFiles": 30,
+   "skippedDataFiles": 0,
+   "totalDataFileSize": 21906551,
+   "scan_filters": "filters=start_ts IS NOT NULL"
+  },
+  {
+   "variant": "B NTZ literal",
+   "sql_literal": "TIMESTAMP_NTZ",
+   "session_timestampType": "TIMESTAMP_LTZ",
+   "rows": 1400000,
+   "revenue": 6719995.3,
+   "median_s_of_5": 0.0438,
+   "spark_filter": "+- BatchScan lab.db.calls[start_ts#319, revenue#320] lab.db.calls (branch=null) [filters=start_ts IS NOT NULL, start_ts >= 1791417600000000, start_ts < 1792022400000000, groupedBy=] RuntimeFilters: []",
+   "resultDataFiles": 7,
+   "skippedDataFiles": 23,
+   "totalDataFileSize": 5107291,
+   "scan_filters": "filters=start_ts IS NOT NULL, start_ts >= 1791417600000000, start_ts < 1792022400000000"
+  },
+  {
+   "variant": "C zoned literal, session timestampType=NTZ",
+   "sql_literal": "TIMESTAMP",
+   "session_timestampType": "TIMESTAMP_NTZ",
+   "rows": 1400000,
+   "revenue": 6719995.3,
+   "median_s_of_5": 0.0418,
+   "spark_filter": "+- BatchScan lab.db.calls[start_ts#469, revenue#470] lab.db.calls (branch=null) [filters=start_ts IS NOT NULL, start_ts >= 1791417600000000, start_ts < 1792022400000000, groupedBy=] RuntimeFilters: []",
+   "resultDataFiles": 7,
+   "skippedDataFiles": 23,
+   "totalDataFileSize": 5107291,
+   "scan_filters": "filters=start_ts IS NOT NULL, start_ts >= 1791417600000000, start_ts < 1792022400000000"
+  }
+ ]
+}
