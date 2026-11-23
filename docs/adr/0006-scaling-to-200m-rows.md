@@ -2,6 +2,7 @@
 
 - Status: accepted
 - Date: 2026-11-21
+- Updated: 2026-11-23 by [ADR 0007](0007-datafusion-memory-and-mimalloc.md) (DataFusion's memory growth)
 
 ## Context
 
@@ -13,10 +14,10 @@ Sum of the six query medians (seconds) and how much it grows:
 
 | Rows | PySpark | Scala Spark | Polars | DuckDB | DataFusion | PySpark / Polars |
 |---|---:|---:|---:|---:|---:|---:|
-| 10M | 1.545 | 1.613 | 0.260 | 0.310 | 0.293 | 5.9x |
-| 50M | 4.660 | 4.769 | 1.103 | 1.217 | 1.632 | 4.2x |
-| 100M | 9.067 | 8.793 | 2.146 | 2.373 | 2.896 | 4.2x |
-| 200M | 15.975 | 15.922 | 4.325 | 4.777 | killed | 3.7x |
+| 10M | 1.545 | 1.613 | 0.260 | 0.310 | 0.301 | 5.9x |
+| 50M | 4.660 | 4.769 | 1.103 | 1.217 | 1.647 | 4.2x |
+| 100M | 9.067 | 8.793 | 2.146 | 2.373 | 2.838 | 4.2x |
+| 200M | 15.975 | 15.922 | 4.325 | 4.777 | 5.532 | 3.7x |
 
 From 100M to 200M rows the single-node engines take 2.0 times as long; Spark 1.8 times. Spark's
 fixed cost per query (scheduling, JVM) is a smaller share of a larger job, so its lead shrinks,
@@ -30,7 +31,13 @@ Running a single query repeatedly in one DataFusion session showed why: resident
 with each run instead of returning to a baseline (Q1 at 200M rows: 0.9, 1.7, 2.5, 3.3 GiB after
 runs 1 to 4; Q3 reached 7.2 to 7.4 GiB on its fourth run). Setting `MALLOC_ARENA_MAX=2` or
 `MALLOC_TRIM_THRESHOLD_=0`, or a 4 GiB fair spill pool, did not change it. The cause was not
-isolated further.
+isolated further in the first round.
+
+Update 2026-11-23: the growth comes from the mimalloc allocator bundled with datafusion-python
+(per-thread heaps of tokio's I/O threads keep the freed read buffers). With
+`MIMALLOC_TARGET_SEGMENTS_PER_THREAD=2`, now the benchmark default, DataFusion finishes 200M rows
+in 5.532 s with a 2.7 GiB peak; the DataFusion column above is from that re-run (10M to 100M within
+noise of the first round). See [ADR 0007](0007-datafusion-memory-and-mimalloc.md).
 
 ## Decision
 
@@ -39,7 +46,8 @@ isolated further.
   half the memory. Size the single-node path by the data a job reads after pruning, with at
   least the measured peak plus 50% headroom.
 - Do not run long-lived DataFusion sessions near their container limit without watching resident
-  memory; prefer a new session per job until the growth above is understood.
+  memory. (Superseded by ADR 0007: a new session per job does not help; cap mimalloc's per-thread
+  segments instead.)
 - This does not move the point at which Spark is needed: that depends on data that does not fit
   one node, shuffles across nodes and fault tolerance, none of which a single machine tests. The
   roadmap item (a 3-node cluster at 500M+ rows) remains open.

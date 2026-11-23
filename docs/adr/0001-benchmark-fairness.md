@@ -27,8 +27,8 @@ headline number.
 5. **Memory.** Peak memory is the container cgroup's `memory.peak`, which covers the JVM or the
    Python process and everything it allocated.
 6. **Correctness gate.** `collect.py` compares every engine's rows with PySpark's (floats to a
-   relative 1e-6, dates normalised). Result: 234 of 234 checks identical over 38 runs (10M to 200M
-   rows, Parquet and Iceberg).
+   relative 1e-6, dates normalised). Result: 240 of 240 checks identical over 39 runs (10M to 200M
+   rows, Parquet and Iceberg; 234 of 234 over 38 runs before DataFusion's 200M re-run on 2026-11-23).
 7. **Failures stay visible.** A run killed for memory is recorded with its exit code and peak
    memory in `summary.json` and marked in the charts, not dropped (ADR 0006).
 

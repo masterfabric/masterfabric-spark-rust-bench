@@ -14,10 +14,10 @@ Sum of the six query medians (seconds), each engine in a 6 CPU / 8 GiB container
 
 | Rows | Polars 2.1.0 | DuckDB 2.0.1 | DataFusion 55.0.0 | PySpark 3.5.5 |
 |---|---:|---:|---:|---:|
-| 10M | 0.260 | 0.310 | 0.293 | 1.545 |
-| 50M | 1.103 | 1.217 | 1.632 | 4.660 |
-| 100M | 2.146 | 2.373 | 2.896 | 9.067 |
-| 200M | 4.325 | 4.777 | killed at 8 GiB | 15.975 |
+| 10M | 0.260 | 0.310 | 0.301 | 1.545 |
+| 50M | 1.103 | 1.217 | 1.647 | 4.660 |
+| 100M | 2.146 | 2.373 | 2.838 | 9.067 |
+| 200M | 4.325 | 4.777 | 5.532 | 15.975 |
 
 Peak container memory at 200M rows: DuckDB 3.2 GiB, Polars 3.6 GiB, PySpark 7.6 GiB. DuckDB
 detected the container limit by itself (`memory_limit` 6.3 GiB inside an 8 GiB container).
@@ -37,4 +37,6 @@ detected the container limit by itself (`memory_limit` 6.3 GiB inside an 8 GiB c
 ## Consequences
 
 - The small-job path in the platform can offer DuckDB and Polars in one image (`mf-srb/engines:2`).
-- One more engine in every chart and check: 38 runs, 234 of 234 query results identical to Spark's.
+- One more engine in every chart and check: 38 runs, 234 of 234 query results identical to Spark's
+  (39 runs, 240 of 240 after DataFusion's 200M re-run on 2026-11-23, ADR 0007; DataFusion
+  figures above are from that re-run).
