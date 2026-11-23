@@ -5,7 +5,7 @@
 # recorded in <name>.exit and the next run starts; it does not stop the benchmark.
 #   SIZES="10m 50m 100m 200m"  parquet sizes       ICEBERG_SIZES="50m"  sizes also read from Iceberg
 #   ENGINES="polars datafusion duckdb pyspark scala"  ICEBERG_ENGINES="polars datafusion duckdb pyspark"
-#   HOST=1  host reference runs
+#   HOST=1  host reference runs     DOCKER_ENV="-e K=V"  extra container environment (e.g. allocator options)
 set -uo pipefail
 cd "$(dirname "$0")/.."
 SPARK_IMG=tabulario/spark-iceberg:3.5.5_1.8.1
@@ -16,7 +16,7 @@ ICEBERG_SIZES=${ICEBERG_SIZES:-"50m"}
 ENGINES=${ENGINES:-"polars datafusion duckdb pyspark scala"}
 ICEBERG_ENGINES=${ICEBERG_ENGINES:-"polars datafusion duckdb pyspark"}
 HOST=${HOST:-1}
-LIMITS="--cpus 6 --memory 8g"
+LIMITS="--cpus 6 --memory 8g ${DOCKER_ENV:-}"
 now() { python3 -c 'import time; print(time.time())'; }
 
 run() {  # name image cmd
