@@ -1,6 +1,6 @@
 all: gen gen-large image bench collect test charts
 
-.PHONY: venv gen gen-large image bench collect test charts docs clean-containers
+.PHONY: venv gen gen-large image bench collect test charts docs clean-containers df-memory ntz-repro
 PY = .venv/bin/python
 
 venv:
@@ -19,6 +19,12 @@ image:  ## Polars + DataFusion + DuckDB container
 
 bench:  ## every engine, one container at a time (6 CPU, 8 GiB); SIZES="10m 50m 100m 200m", ICEBERG_SIZES="50m"
 	bash bench/run_all.sh
+
+df-memory:  ## DataFusion memory diagnosis at 200M rows (8 variants, about 6 minutes; needs gen-large and image)
+	SIZE=200m bash bench/df_memory.sh
+
+ntz-repro:  ## Spark TIMESTAMP vs TIMESTAMP_NTZ pruning on a small Iceberg table (about 10 s after the image is pulled)
+	docker run --rm -v "$(PWD)":/w -w /w --entrypoint python3 tabulario/spark-iceberg:3.5.5_1.8.1 examples/spark_ntz_pruning/repro.py
 
 collect:
 	$(PY) bench/collect.py

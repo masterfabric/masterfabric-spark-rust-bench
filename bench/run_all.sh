@@ -31,7 +31,11 @@ run() {  # name image cmd
 }
 
 single() {  # engine size format prefix
-  run "$4$1_$2" $ENG_IMG "python bench/run_python_engine.py $1 /w/data $2 $RAW/$4$1_$2.json $3"
+  # DataFusion's wheel ships mimalloc; without a segment target per thread, memory freed by tokio's I/O
+  # threads is not reused across queries and a 200M-row run grows past 8 GiB (ADR 0007). DF_MIMALLOC_SEGMENTS=0 restores the default.
+  local pre=""
+  [ "$1" = datafusion ] && [ "${DF_MIMALLOC_SEGMENTS:-2}" != 0 ] && pre="MIMALLOC_TARGET_SEGMENTS_PER_THREAD=${DF_MIMALLOC_SEGMENTS:-2} "
+  run "$4$1_$2" $ENG_IMG "${pre}python bench/run_python_engine.py $1 /w/data $2 $RAW/$4$1_$2.json $3"
 }
 
 for s in $SIZES; do
