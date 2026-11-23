@@ -87,3 +87,55 @@ all listed in NOTICE.
   the Iceberg runs use their own Hadoop catalog (`lab`) and keep `spark_catalog` as the default.
 - The Polars/DataFusion image is now `mf-srb/engines:2` (Dockerfile.engines), since DuckDB is
   C++, not Rust. The old `mf-srb/rust-engines:1` image was left in place.
+
+## Addition: DataFusion's memory at 200M rows explained and fixed; NTZ pruning reproduction (2026-11-23)
+
+Two open items from the 2026-11-21 round: why DataFusion was killed at 200M rows, and a
+standalone reproduction of the Spark Iceberg pruning finding. Times are Europe/Istanbul.
+
+| Commit | Time | What |
+|---|---|---|
+| `6160e9e` | 2026-11-23 13:17 | diagnosis: DataFusion memory across repeated queries at 200M rows; spill pool, memory limit, glibc and per-run sessions do not stop it, mimalloc segment target and idle-thread pauses do |
+| `8e0e2b8` | 2026-11-23 13:17 | bench: DOCKER_ENV passes extra environment to the benchmark containers |
+| `70e62e1` | 2026-11-23 13:17 | results: DataFusion re-run at all sizes with MIMALLOC_TARGET_SEGMENTS_PER_THREAD=2; 200M finishes (5.532 s, 2.7 GiB), all results match |
+| `ef5b40e` | 2026-11-23 13:17 | example: self-contained reproduction of the Spark TIMESTAMP vs TIMESTAMP_NTZ pruning finding (30 vs 7 files) |
+| `dc5ceb4` | 2026-11-23 13:20 | diagnosis: memory added per DataFusion run matches the compressed bytes of the columns read (0.29/0.48/0.81 GiB vs 0.25/0.41/0.80) |
+| `78175b3` | 2026-11-23 13:20 | bench: DataFusion runs with MIMALLOC_TARGET_SEGMENTS_PER_THREAD=2 by default (DF_MIMALLOC_SEGMENTS=0 for the old behaviour); make df-memory, make ntz-repro |
+| `51e0123` | 2026-11-23 13:20 | charts: DataFusion memory per run and per column, NTZ pruning repro; query, scaling, overhead and Iceberg charts regenerated with DataFusion at 200M |
+| `2170ae3` | 2026-11-23 13:23 | docs(adr): 0007 DataFusion memory growth comes from mimalloc's per-thread segments; 0006, 0004, 0001 updated with the 200M re-run; NTZ example README |
+| `a839b43` | 2026-11-23 13:23 | README: DataFusion at 200M rows (figure 7), the NTZ pruning reproduction (figure 8), updated tables and limitations; hero and setup diagram from the new results |
+| (this commit) | 2026-11-23 | docs(timeline): DataFusion memory and the NTZ reproduction |
+
+### Verification
+
+| Check | Result |
+|---|---|
+| Diagnosis (`make df-memory`) | 8 variants × 24 query runs at 200M rows in the 6 CPU / 8 GiB container; 6 killed on Q3 run 3 (glibc arena, spill pool, session per run, mimalloc purge delay), 2 finish (`MIMALLOC_TARGET_SEGMENTS_PER_THREAD=2` at ≤ 3.0 GiB, 12 s pause at ≤ 1.4 GiB) |
+| Column probe | memory added per run vs compressed column: 0.294 vs 0.249, 0.483 vs 0.408, 0.806 vs 0.797 GiB |
+| DataFusion re-run, all sizes | 200M: 5.532 s, peak 2,776 MiB (was killed at 8,192); 10M/50M/100M peak 679/1,080/1,841 MiB (was 1,653/3,575/6,652); sums within 2% of the first round |
+| Correctness gate | 240 of 240 query results identical to Spark's over 39 runs; one recorded failure left (DataFusion on the 200M Iceberg table, not re-run) |
+| NTZ reproduction (`make ntz-repro`) | 30-file table: TIMESTAMP literal reads 30 files (188 ms); TIMESTAMP_NTZ literal and session `timestampType=TIMESTAMP_NTZ` read 7, skip 23 (44 / 42 ms); 1,400,000 rows each time |
+| Unit tests | 9 passed |
+| Machine state | containers run with `--rm`; data for 100M/200M deleted after the run; k3d `mf-llm` stopped as found; ports 3000, 8081, 11234 untouched |
+
+### Found while running it
+
+- glibc allocator settings could never have helped: the datafusion-python wheel bundles
+  mimalloc. The first round's `MALLOC_ARENA_MAX` test was testing the wrong allocator.
+- A new `SessionContext` per run does not help either, which rules out the session and its
+  caches. ADR 0006's advice to prefer a new session per job is superseded by ADR 0007.
+- The growth per run tracks the compressed bytes read, and thread counts fall from 44 to 7 when
+  runs are 12 s apart (tokio retires idle blocking threads after about 10 s). Freed read buffers
+  stay in the per-thread heaps of live I/O threads. A 50M-row plateau test showed they are
+  eventually returned, so it is retention, not a leak.
+- The same growth appears with datafusion-python 48, 52 and 54.1, so it is not new in 55.
+- The diagnosis files (`results/df_memory_*`) were measured on 100M/200M data generated inside
+  the engines container. Its Q4 result differed from the benchmark data in a handful of rows
+  (different numpy/pyarrow), which does not affect memory; the benchmark re-run used data
+  regenerated on the host with the pinned versions, which matches the original files.
+- The Spark image defaults to a REST catalog that is not running here; the reproduction sets
+  `spark.sql.defaultCatalog=spark_catalog` and uses `--entrypoint python3`.
+- A background job on this laptop removed every `.venv` under `~/Documents/GitHub` during the
+  work; the runs used a temporary venv outside the repository instead.
+- The DataFusion Iceberg read at 200M rows was not re-run: the 200M Iceberg tables had been
+  removed to save disk, and rebuilding them takes Spark about 4 minutes and 4.3 GiB.
