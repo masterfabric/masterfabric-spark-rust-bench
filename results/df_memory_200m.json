@@ -1,0 +1,946 @@
+{
+ "note": "DataFusion 55.0.0 (datafusion-python wheel, bundled mimalloc), 200M rows, six queries x 4 runs in one process, container 6 CPU / 8 GiB. Memory in GiB after each run. Data for this diagnosis was generated inside the engines container; it differs from the benchmark files in a handful of rows (see TIMELINE), which does not affect memory.",
+ "variants": {
+  "baseline": {
+   "env": {},
+   "runs": [
+    {
+     "query": "q1_filter_agg",
+     "run": 1,
+     "seconds": 0.554,
+     "rss_gib": 0.988,
+     "anon_gib": 0.908,
+     "threads": null
+    },
+    {
+     "query": "q1_filter_agg",
+     "run": 2,
+     "seconds": 0.647,
+     "rss_gib": 1.774,
+     "anon_gib": 1.694,
+     "threads": null
+    },
+    {
+     "query": "q1_filter_agg",
+     "run": 3,
+     "seconds": 1.109,
+     "rss_gib": 2.583,
+     "anon_gib": 2.503,
+     "threads": null
+    },
+    {
+     "query": "q1_filter_agg",
+     "run": 4,
+     "seconds": 1.246,
+     "rss_gib": 3.409,
+     "anon_gib": 3.329,
+     "threads": null
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 1,
+     "seconds": 1.252,
+     "rss_gib": 4.499,
+     "anon_gib": 4.418,
+     "threads": null
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 2,
+     "seconds": 1.161,
+     "rss_gib": 5.179,
+     "anon_gib": 5.098,
+     "threads": null
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 3,
+     "seconds": 0.81,
+     "rss_gib": 4.089,
+     "anon_gib": 4.009,
+     "threads": null
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 4,
+     "seconds": 0.742,
+     "rss_gib": 2.856,
+     "anon_gib": 2.775,
+     "threads": null
+    },
+    {
+     "query": "q3_join_daily",
+     "run": 1,
+     "seconds": 1.821,
+     "rss_gib": 3.695,
+     "anon_gib": 3.613,
+     "threads": null
+    },
+    {
+     "query": "q3_join_daily",
+     "run": 2,
+     "seconds": 2.289,
+     "rss_gib": 6.105,
+     "anon_gib": 6.024,
+     "threads": null
+    }
+   ],
+   "exit": 137,
+   "completed": false,
+   "max_rss_gib": 6.105
+  },
+  "glibc_arena2": {
+   "env": {},
+   "runs": [
+    {
+     "query": "q1_filter_agg",
+     "run": 1,
+     "seconds": 0.563,
+     "rss_gib": 0.996,
+     "anon_gib": 0.916,
+     "threads": null
+    },
+    {
+     "query": "q1_filter_agg",
+     "run": 2,
+     "seconds": 0.563,
+     "rss_gib": 1.757,
+     "anon_gib": 1.678,
+     "threads": null
+    },
+    {
+     "query": "q1_filter_agg",
+     "run": 3,
+     "seconds": 0.552,
+     "rss_gib": 2.577,
+     "anon_gib": 2.498,
+     "threads": null
+    },
+    {
+     "query": "q1_filter_agg",
+     "run": 4,
+     "seconds": 0.546,
+     "rss_gib": 3.41,
+     "anon_gib": 3.331,
+     "threads": null
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 1,
+     "seconds": 0.693,
+     "rss_gib": 4.419,
+     "anon_gib": 4.339,
+     "threads": null
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 2,
+     "seconds": 0.714,
+     "rss_gib": 3.904,
+     "anon_gib": 3.824,
+     "threads": null
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 3,
+     "seconds": 0.723,
+     "rss_gib": 2.085,
+     "anon_gib": 2.005,
+     "threads": null
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 4,
+     "seconds": 0.713,
+     "rss_gib": 2.332,
+     "anon_gib": 2.252,
+     "threads": null
+    },
+    {
+     "query": "q3_join_daily",
+     "run": 1,
+     "seconds": 1.725,
+     "rss_gib": 4.45,
+     "anon_gib": 4.369,
+     "threads": null
+    },
+    {
+     "query": "q3_join_daily",
+     "run": 2,
+     "seconds": 1.798,
+     "rss_gib": 6.952,
+     "anon_gib": 6.871,
+     "threads": null
+    }
+   ],
+   "exit": 137,
+   "completed": false,
+   "max_rss_gib": 6.952
+  },
+  "spill_pool_4g": {
+   "env": {
+    "DF_MEMORY_POOL_GIB": "4"
+   },
+   "runs": [
+    {
+     "query": "q1_filter_agg",
+     "run": 1,
+     "seconds": 0.556,
+     "rss_gib": 0.998,
+     "anon_gib": 0.918,
+     "threads": null
+    },
+    {
+     "query": "q1_filter_agg",
+     "run": 2,
+     "seconds": 0.556,
+     "rss_gib": 1.755,
+     "anon_gib": 1.676,
+     "threads": null
+    },
+    {
+     "query": "q1_filter_agg",
+     "run": 3,
+     "seconds": 0.542,
+     "rss_gib": 2.574,
+     "anon_gib": 2.495,
+     "threads": null
+    },
+    {
+     "query": "q1_filter_agg",
+     "run": 4,
+     "seconds": 0.54,
+     "rss_gib": 3.407,
+     "anon_gib": 3.327,
+     "threads": null
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 1,
+     "seconds": 0.646,
+     "rss_gib": 4.505,
+     "anon_gib": 4.425,
+     "threads": null
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 2,
+     "seconds": 0.684,
+     "rss_gib": 3.83,
+     "anon_gib": 3.75,
+     "threads": null
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 3,
+     "seconds": 0.718,
+     "rss_gib": 1.98,
+     "anon_gib": 1.9,
+     "threads": null
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 4,
+     "seconds": 0.712,
+     "rss_gib": 2.239,
+     "anon_gib": 2.159,
+     "threads": null
+    },
+    {
+     "query": "q3_join_daily",
+     "run": 1,
+     "seconds": 1.721,
+     "rss_gib": 4.416,
+     "anon_gib": 4.334,
+     "threads": null
+    },
+    {
+     "query": "q3_join_daily",
+     "run": 2,
+     "seconds": 1.707,
+     "rss_gib": 6.933,
+     "anon_gib": 6.851,
+     "threads": null
+    }
+   ],
+   "exit": 137,
+   "completed": false,
+   "max_rss_gib": 6.933
+  },
+  "session_per_run": {
+   "env": {
+    "SESSION_PER_RUN": "1"
+   },
+   "runs": [
+    {
+     "query": "q1_filter_agg",
+     "run": 1,
+     "seconds": 0.654,
+     "rss_gib": 0.982,
+     "anon_gib": 0.902,
+     "threads": null
+    },
+    {
+     "query": "q1_filter_agg",
+     "run": 2,
+     "seconds": 0.547,
+     "rss_gib": 1.779,
+     "anon_gib": 1.7,
+     "threads": null
+    },
+    {
+     "query": "q1_filter_agg",
+     "run": 3,
+     "seconds": 0.552,
+     "rss_gib": 2.644,
+     "anon_gib": 2.564,
+     "threads": null
+    },
+    {
+     "query": "q1_filter_agg",
+     "run": 4,
+     "seconds": 0.535,
+     "rss_gib": 3.488,
+     "anon_gib": 3.408,
+     "threads": null
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 1,
+     "seconds": 0.665,
+     "rss_gib": 4.584,
+     "anon_gib": 4.504,
+     "threads": null
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 2,
+     "seconds": 0.652,
+     "rss_gib": 5.13,
+     "anon_gib": 5.05,
+     "threads": null
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 3,
+     "seconds": 0.712,
+     "rss_gib": 3.065,
+     "anon_gib": 2.985,
+     "threads": null
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 4,
+     "seconds": 0.705,
+     "rss_gib": 2.562,
+     "anon_gib": 2.482,
+     "threads": null
+    },
+    {
+     "query": "q3_join_daily",
+     "run": 1,
+     "seconds": 1.741,
+     "rss_gib": 4.307,
+     "anon_gib": 4.226,
+     "threads": null
+    },
+    {
+     "query": "q3_join_daily",
+     "run": 2,
+     "seconds": 1.679,
+     "rss_gib": 6.782,
+     "anon_gib": 6.7,
+     "threads": null
+    }
+   ],
+   "exit": 137,
+   "completed": false,
+   "max_rss_gib": 6.782
+  },
+  "mimalloc_purge0": {
+   "env": {
+    "MIMALLOC_PURGE_DELAY": "0"
+   },
+   "runs": [
+    {
+     "query": "q1_filter_agg",
+     "run": 1,
+     "seconds": 0.71,
+     "rss_gib": 0.969,
+     "anon_gib": 0.89,
+     "threads": null
+    },
+    {
+     "query": "q1_filter_agg",
+     "run": 2,
+     "seconds": 0.715,
+     "rss_gib": 1.727,
+     "anon_gib": 1.648,
+     "threads": null
+    },
+    {
+     "query": "q1_filter_agg",
+     "run": 3,
+     "seconds": 0.704,
+     "rss_gib": 2.543,
+     "anon_gib": 2.464,
+     "threads": null
+    },
+    {
+     "query": "q1_filter_agg",
+     "run": 4,
+     "seconds": 0.701,
+     "rss_gib": 3.375,
+     "anon_gib": 3.296,
+     "threads": null
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 1,
+     "seconds": 0.616,
+     "rss_gib": 4.129,
+     "anon_gib": 4.049,
+     "threads": null
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 2,
+     "seconds": 0.653,
+     "rss_gib": 2.323,
+     "anon_gib": 2.243,
+     "threads": null
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 3,
+     "seconds": 0.993,
+     "rss_gib": 1.124,
+     "anon_gib": 1.044,
+     "threads": null
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 4,
+     "seconds": 0.824,
+     "rss_gib": 1.766,
+     "anon_gib": 1.686,
+     "threads": null
+    },
+    {
+     "query": "q3_join_daily",
+     "run": 1,
+     "seconds": 2.05,
+     "rss_gib": 3.962,
+     "anon_gib": 3.881,
+     "threads": null
+    },
+    {
+     "query": "q3_join_daily",
+     "run": 2,
+     "seconds": 2.231,
+     "rss_gib": 6.459,
+     "anon_gib": 6.378,
+     "threads": null
+    }
+   ],
+   "exit": 137,
+   "completed": false,
+   "max_rss_gib": 6.459
+  },
+  "mimalloc_purge0_pool4g": {
+   "env": {
+    "MIMALLOC_PURGE_DELAY": "0",
+    "DF_MEMORY_POOL_GIB": "4"
+   },
+   "runs": [
+    {
+     "query": "q1_filter_agg",
+     "run": 1,
+     "seconds": 0.84,
+     "rss_gib": 0.972,
+     "anon_gib": 0.893,
+     "threads": null
+    },
+    {
+     "query": "q1_filter_agg",
+     "run": 2,
+     "seconds": 0.804,
+     "rss_gib": 1.723,
+     "anon_gib": 1.643,
+     "threads": null
+    },
+    {
+     "query": "q1_filter_agg",
+     "run": 3,
+     "seconds": 0.777,
+     "rss_gib": 2.544,
+     "anon_gib": 2.464,
+     "threads": null
+    },
+    {
+     "query": "q1_filter_agg",
+     "run": 4,
+     "seconds": 0.788,
+     "rss_gib": 3.372,
+     "anon_gib": 3.292,
+     "threads": null
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 1,
+     "seconds": 0.913,
+     "rss_gib": 4.084,
+     "anon_gib": 4.004,
+     "threads": null
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 2,
+     "seconds": 0.921,
+     "rss_gib": 2.707,
+     "anon_gib": 2.627,
+     "threads": null
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 3,
+     "seconds": 0.904,
+     "rss_gib": 1.01,
+     "anon_gib": 0.93,
+     "threads": null
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 4,
+     "seconds": 0.894,
+     "rss_gib": 1.741,
+     "anon_gib": 1.661,
+     "threads": null
+    },
+    {
+     "query": "q3_join_daily",
+     "run": 1,
+     "seconds": 2.354,
+     "rss_gib": 3.956,
+     "anon_gib": 3.874,
+     "threads": null
+    },
+    {
+     "query": "q3_join_daily",
+     "run": 2,
+     "seconds": 2.357,
+     "rss_gib": 6.46,
+     "anon_gib": 6.378,
+     "threads": null
+    }
+   ],
+   "exit": 137,
+   "completed": false,
+   "max_rss_gib": 6.46
+  },
+  "mimalloc_segments2": {
+   "env": {
+    "MIMALLOC_TARGET_SEGMENTS_PER_THREAD": "2"
+   },
+   "runs": [
+    {
+     "query": "q1_filter_agg",
+     "run": 1,
+     "seconds": 0.521,
+     "rss_gib": 0.985,
+     "anon_gib": 0.905,
+     "threads": 44
+    },
+    {
+     "query": "q1_filter_agg",
+     "run": 2,
+     "seconds": 0.524,
+     "rss_gib": 1.775,
+     "anon_gib": 1.695,
+     "threads": 44
+    },
+    {
+     "query": "q1_filter_agg",
+     "run": 3,
+     "seconds": 0.517,
+     "rss_gib": 1.72,
+     "anon_gib": 1.64,
+     "threads": 44
+    },
+    {
+     "query": "q1_filter_agg",
+     "run": 4,
+     "seconds": 0.525,
+     "rss_gib": 1.48,
+     "anon_gib": 1.4,
+     "threads": 44
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 1,
+     "seconds": 0.654,
+     "rss_gib": 2.373,
+     "anon_gib": 2.293,
+     "threads": 44
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 2,
+     "seconds": 0.596,
+     "rss_gib": 2.543,
+     "anon_gib": 2.463,
+     "threads": 44
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 3,
+     "seconds": 0.599,
+     "rss_gib": 2.225,
+     "anon_gib": 2.144,
+     "threads": 44
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 4,
+     "seconds": 0.622,
+     "rss_gib": 1.714,
+     "anon_gib": 1.634,
+     "threads": 44
+    },
+    {
+     "query": "q3_join_daily",
+     "run": 1,
+     "seconds": 1.759,
+     "rss_gib": 2.051,
+     "anon_gib": 1.969,
+     "threads": 44
+    },
+    {
+     "query": "q3_join_daily",
+     "run": 2,
+     "seconds": 1.685,
+     "rss_gib": 2.14,
+     "anon_gib": 2.058,
+     "threads": 44
+    },
+    {
+     "query": "q3_join_daily",
+     "run": 3,
+     "seconds": 1.655,
+     "rss_gib": 2.209,
+     "anon_gib": 2.127,
+     "threads": 44
+    },
+    {
+     "query": "q3_join_daily",
+     "run": 4,
+     "seconds": 1.657,
+     "rss_gib": 2.21,
+     "anon_gib": 2.128,
+     "threads": 44
+    },
+    {
+     "query": "q4_distinct",
+     "run": 1,
+     "seconds": 1.423,
+     "rss_gib": 3.012,
+     "anon_gib": 2.93,
+     "threads": 44
+    },
+    {
+     "query": "q4_distinct",
+     "run": 2,
+     "seconds": 1.442,
+     "rss_gib": 2.18,
+     "anon_gib": 2.098,
+     "threads": 44
+    },
+    {
+     "query": "q4_distinct",
+     "run": 3,
+     "seconds": 1.483,
+     "rss_gib": 2.139,
+     "anon_gib": 2.057,
+     "threads": 44
+    },
+    {
+     "query": "q4_distinct",
+     "run": 4,
+     "seconds": 1.486,
+     "rss_gib": 2.797,
+     "anon_gib": 2.715,
+     "threads": 44
+    },
+    {
+     "query": "q5_window_topn",
+     "run": 1,
+     "seconds": 0.362,
+     "rss_gib": 2.011,
+     "anon_gib": 1.928,
+     "threads": 44
+    },
+    {
+     "query": "q5_window_topn",
+     "run": 2,
+     "seconds": 0.366,
+     "rss_gib": 2.075,
+     "anon_gib": 1.992,
+     "threads": 44
+    },
+    {
+     "query": "q5_window_topn",
+     "run": 3,
+     "seconds": 0.355,
+     "rss_gib": 2.235,
+     "anon_gib": 2.152,
+     "threads": 44
+    },
+    {
+     "query": "q5_window_topn",
+     "run": 4,
+     "seconds": 0.355,
+     "rss_gib": 2.059,
+     "anon_gib": 1.976,
+     "threads": 44
+    },
+    {
+     "query": "q6_one_week",
+     "run": 1,
+     "seconds": 0.59,
+     "rss_gib": 2.263,
+     "anon_gib": 2.18,
+     "threads": 44
+    },
+    {
+     "query": "q6_one_week",
+     "run": 2,
+     "seconds": 0.592,
+     "rss_gib": 1.906,
+     "anon_gib": 1.823,
+     "threads": 44
+    },
+    {
+     "query": "q6_one_week",
+     "run": 3,
+     "seconds": 0.599,
+     "rss_gib": 1.943,
+     "anon_gib": 1.86,
+     "threads": 44
+    },
+    {
+     "query": "q6_one_week",
+     "run": 4,
+     "seconds": 0.611,
+     "rss_gib": 1.961,
+     "anon_gib": 1.878,
+     "threads": 44
+    }
+   ],
+   "exit": 0,
+   "completed": true,
+   "max_rss_gib": 3.012
+  },
+  "pause12": {
+   "env": {
+    "PAUSE_S": "12"
+   },
+   "runs": [
+    {
+     "query": "q1_filter_agg",
+     "run": 1,
+     "seconds": 0.514,
+     "rss_gib": 1.003,
+     "anon_gib": 0.923,
+     "threads": 7
+    },
+    {
+     "query": "q1_filter_agg",
+     "run": 2,
+     "seconds": 0.532,
+     "rss_gib": 0.328,
+     "anon_gib": 0.248,
+     "threads": 7
+    },
+    {
+     "query": "q1_filter_agg",
+     "run": 3,
+     "seconds": 0.528,
+     "rss_gib": 0.304,
+     "anon_gib": 0.224,
+     "threads": 7
+    },
+    {
+     "query": "q1_filter_agg",
+     "run": 4,
+     "seconds": 0.54,
+     "rss_gib": 0.304,
+     "anon_gib": 0.224,
+     "threads": 7
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 1,
+     "seconds": 0.642,
+     "rss_gib": 1.026,
+     "anon_gib": 0.946,
+     "threads": 7
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 2,
+     "seconds": 0.644,
+     "rss_gib": 1.092,
+     "anon_gib": 1.012,
+     "threads": 7
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 3,
+     "seconds": 0.634,
+     "rss_gib": 1.137,
+     "anon_gib": 1.056,
+     "threads": 7
+    },
+    {
+     "query": "q2_high_card_groupby",
+     "run": 4,
+     "seconds": 1.103,
+     "rss_gib": 1.082,
+     "anon_gib": 1.001,
+     "threads": 7
+    },
+    {
+     "query": "q3_join_daily",
+     "run": 1,
+     "seconds": 1.807,
+     "rss_gib": 1.038,
+     "anon_gib": 0.956,
+     "threads": 7
+    },
+    {
+     "query": "q3_join_daily",
+     "run": 2,
+     "seconds": 1.902,
+     "rss_gib": 0.797,
+     "anon_gib": 0.715,
+     "threads": 7
+    },
+    {
+     "query": "q3_join_daily",
+     "run": 3,
+     "seconds": 1.705,
+     "rss_gib": 0.815,
+     "anon_gib": 0.733,
+     "threads": 7
+    },
+    {
+     "query": "q3_join_daily",
+     "run": 4,
+     "seconds": 1.71,
+     "rss_gib": 0.815,
+     "anon_gib": 0.732,
+     "threads": 7
+    },
+    {
+     "query": "q4_distinct",
+     "run": 1,
+     "seconds": 1.614,
+     "rss_gib": 1.393,
+     "anon_gib": 1.311,
+     "threads": 7
+    },
+    {
+     "query": "q4_distinct",
+     "run": 2,
+     "seconds": 1.565,
+     "rss_gib": 0.561,
+     "anon_gib": 0.479,
+     "threads": 7
+    },
+    {
+     "query": "q4_distinct",
+     "run": 3,
+     "seconds": 1.58,
+     "rss_gib": 1.255,
+     "anon_gib": 1.172,
+     "threads": 7
+    },
+    {
+     "query": "q4_distinct",
+     "run": 4,
+     "seconds": 1.595,
+     "rss_gib": 1.343,
+     "anon_gib": 1.261,
+     "threads": 7
+    },
+    {
+     "query": "q5_window_topn",
+     "run": 1,
+     "seconds": 0.383,
+     "rss_gib": 1.142,
+     "anon_gib": 1.059,
+     "threads": 7
+    },
+    {
+     "query": "q5_window_topn",
+     "run": 2,
+     "seconds": 0.402,
+     "rss_gib": 1.088,
+     "anon_gib": 1.005,
+     "threads": 7
+    },
+    {
+     "query": "q5_window_topn",
+     "run": 3,
+     "seconds": 0.396,
+     "rss_gib": 1.067,
+     "anon_gib": 0.984,
+     "threads": 7
+    },
+    {
+     "query": "q5_window_topn",
+     "run": 4,
+     "seconds": 0.373,
+     "rss_gib": 1.072,
+     "anon_gib": 0.989,
+     "threads": 7
+    },
+    {
+     "query": "q6_one_week",
+     "run": 1,
+     "seconds": 0.762,
+     "rss_gib": 0.741,
+     "anon_gib": 0.658,
+     "threads": 7
+    },
+    {
+     "query": "q6_one_week",
+     "run": 2,
+     "seconds": 0.636,
+     "rss_gib": 1.319,
+     "anon_gib": 1.236,
+     "threads": 7
+    },
+    {
+     "query": "q6_one_week",
+     "run": 3,
+     "seconds": 0.638,
+     "rss_gib": 1.313,
+     "anon_gib": 1.23,
+     "threads": 7
+    },
+    {
+     "query": "q6_one_week",
+     "run": 4,
+     "seconds": 0.596,
+     "rss_gib": 1.278,
+     "anon_gib": 1.195,
+     "threads": 7
+    }
+   ],
+   "exit": 0,
+   "completed": true,
+   "max_rss_gib": 1.393
+  }
+ }
+}
