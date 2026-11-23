@@ -1,0 +1,35 @@
+{
+ "size": "200m",
+ "columns": {
+  "duration_s": {
+   "rss_after_runs_gib": [
+    0.444,
+    0.747,
+    1.042,
+    1.327
+   ],
+   "added_per_run_gib": 0.294,
+   "compressed_column_gib": 0.249
+  },
+  "bytes_mb": {
+   "rss_after_runs_gib": [
+    1.767,
+    2.242,
+    2.739,
+    3.216
+   ],
+   "added_per_run_gib": 0.483,
+   "compressed_column_gib": 0.408
+  },
+  "call_id": {
+   "rss_after_runs_gib": [
+    4.068,
+    4.879,
+    5.676,
+    6.485
+   ],
+   "added_per_run_gib": 0.806,
+   "compressed_column_gib": 0.797
+  }
+ }
+}
